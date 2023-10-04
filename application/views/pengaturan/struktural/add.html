@@ -1,0 +1,52 @@
+<!-- include javascript -->
+{include file="pengaturan/struktural/add_script_js.html"}
+<!-- end of include javascript-->
+</script>
+<div class="breadcrum">
+    <p><a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/struktural')}">Hak Akses Penilaian Struktural</a><span></span>
+        <small>Add Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/struktural/index')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/struktural/add_process')}" method="post">
+    <table class="table-input" width="100%">
+        <tr>
+            <td width="20%">Pejabat Struktural</td>
+            <td width="80%">
+                <select name="FS_KD_PEG" class="select2" style="width: 300px;">
+                    <option value=""></option>
+                    {foreach from=$rs_pegawai item=data}
+                    <option value="{$data.FS_KD_PEG}">{$data.FS_NM_PEG}</option>
+                    {/foreach}
+                </select> 
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Penilai Pejabat Struktural</td>
+            <td>
+                <select name="penilai[]" multiple id="tujuan" style="width:250px">
+                    <option></option>
+                </select>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

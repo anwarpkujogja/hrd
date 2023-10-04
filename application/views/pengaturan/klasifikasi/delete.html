@@ -1,0 +1,44 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/klasifikasi')}">Klasifikasi Arsip</a><span></span>
+        <small>Delete Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/klasifikasi')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />  Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/klasifikasi/delete_process')}" method="post" onsubmit="return confirm('Apakah anda yakin akan menghapus data berikut ini?')">
+    <input type="hidden" name="klasifikasi_cd" value="{$result.klasifikasi_cd|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Apakah anda yakin akan menghapus data dibawah ini?</th>
+        </tr>
+        <tr>
+            <td width='20%'>Kategori</td>
+            <td width='80%'><b>{$result.klas_name}</b></td>
+        </tr>
+        <tr>
+            <td>Kode Klasifikasi</td>
+            <td><b>{$result.klasifikasi_cd|default:''}</b></td>
+        </tr>
+        <tr>
+            <td>Nama Klasifikasi</td>
+            <td><b>{$result.klasifikasi_name|default:''}</b></td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Hapus" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

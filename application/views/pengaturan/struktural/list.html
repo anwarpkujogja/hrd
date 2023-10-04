@@ -1,0 +1,52 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Hak Akses Penilaian Struktural</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong></strong></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/struktural/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th>NIK Dinilai</th>
+        <th>Nama Dinilai</th>
+        <th>NIK Penilai</th>
+        <th>Nama Penilai</th>
+        <th width="7%"></th>
+    </tr>
+    {foreach from=$rs_result item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>          
+        <td align="center">{$result.NIK_DINILAI|default:''}</td>
+        <td>{$result.NAMA_DINILAI|default:''}</td>
+        <td align="center">{$result.NIK_PENILAI|default:''}</td>
+        <td>{$result.NAMA_PENILAI|default:''}</td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/struktural/delete_process/'|cat:$result.FS_KD_TRS|default:'')}" onclick="return confirm('Apakah Ingin Menghapus?')" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="9">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

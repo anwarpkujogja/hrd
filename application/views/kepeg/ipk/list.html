@@ -1,0 +1,92 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Kepegawaian</a><span></span>
+        <small>IPK</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('kepeg/ipk/proses_cari')}" method="post">
+        <table class="table-search" width="100%">
+            <tr>
+                <th width="5%">Filter</th>
+                <td width="95%">
+                    <select name="periode">
+                    <option value="1" {if $search.periode|default:'' eq '1'}selected="selected"{/if}>Januari - Maret</option>
+                    <option value="2" {if $search.periode|default:'' eq '2'}selected="selected"{/if}>April - Juni</option>
+                    <option value="3" {if $search.periode|default:'' eq '3'}selected="selected"{/if}>Juli - September</option>
+                    <option value="4" {if $search.periode|default:'' eq '4'}selected="selected"{/if}>Oktober - Desember</option>
+                </select>
+                <select name="tahun">
+                    {foreach from=$rs_tahun item=tahun}
+                    <option value="{$tahun}" {if $search.tahun|default:'' eq $tahun}selected="selected"{/if}>{$tahun}</option>
+                    {/foreach}
+                </select>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="10%">Periode</th>
+        <th>NIK</th>
+        <th>Nama Pegawai</th>
+        <th>Bagian</th>
+        <th width="5%">Jumlah Index</th>
+        <th width="13%">IPK</th>
+        <th width="13%">Potongan</th>
+        <th width="13%">IPK di Terima</th>
+        <th width="15%">Aksi</th>
+    </tr>
+    {foreach from=$rs_draft item=result}
+    {assign var=ipk value=$result.FN_JML_TERIMA-$result.FS_POTONGAN}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">
+            {if $result.PERIODE eq '1'}
+            Januari - Maret
+            {elseif $result.PERIODE eq '2'}
+            April - Juni
+            {elseif $result.PERIODE eq '3'}
+            Juli - September
+            {elseif $result.PERIODE eq '4'}
+            Oktober - Desember
+            {/if}
+            - {$result.TAHUN}
+        </td>
+        <td>{$result.FS_KD_PEG|upper}</td>
+        <td>{$result.FS_NM_PEG|upper}</td>
+        <td>{$result.FS_NM_BAGIAN|upper}</td>
+        <td align="center">{$result.FN_JML_IPK}</td>
+        <!--<td align="center">{((($rs_jmlpdpt.FN_JML_PENDAPATAN/$rs_jmlindex.JML_IPK)*$result.FN_JML_IPK)*($result.FS_IKU/100)*($result.FS_IKI/100)*$result.FS_PENGURANG)|number_format:0:".":","}</td>-->
+        <td align="center">{$result.FN_JML_TERIMA|number_format:0:".":","}</td>
+        <td align="center">{$result.FS_POTONGAN|number_format:0:".":","}</td>
+        <td align="center">{$ipk|number_format:0:".":","}</td>
+        <td align="center">
+            <a href="javascript:void(0);" onclick="window.open('{$config->site_url('kepeg/ipk/slip/'|cat:$result.FS_KD_TRS|default:'')}', 'nama_window_pop_up', 'scrollbars=yes,resizeable=no')" class="button-download">Slip</a>
+        </td>
+</tr>
+{foreachelse}
+<tr>
+    <td colspan="5">Data not found!</td>
+</tr>
+{/foreach}
+</table>

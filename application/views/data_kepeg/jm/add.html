@@ -1,0 +1,235 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+    // date picker
+    $(".tanggal").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        showOn: "both",
+        buttonImage: "{$BASEURL}/resource/doc/images/icon/calendar.gif",
+        buttonImageOnly: true,
+        dateFormat: 'yy-mm-dd'
+    });
+
+    $(".select2").select2({
+        placeholder: "Pilih",
+        allowClear: true
+    });
+});
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Kepegawaian</a><span></span>
+        <small>Jasa Medis</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('data_kepeg/jm/proses_cari_jm')}" method="post">
+        <table class="table-search" width="100%">
+            <tr>
+                <th width="10%">Nama Dokter</th>
+                <td width="20%">
+                    <select name="FS_KD_PEG" class="select2" style="width: 250px;">
+                        <option value="">--All Data--</option>
+                        {foreach from=$rs_dokter item=data}
+                        <option value="{$data.fs_kd_peg}" {if $searchadd.FS_KD_PEG|default:'' eq $data.fs_kd_peg}selected="selected"{/if}>{$data.fs_nm_peg}</option>
+                        {/foreach}
+                    </td>
+                    <th width="10%">Periode</th>
+                    <td width="25%">
+                        <input type="text" class="tanggal" name="tanggal" value="{$searchadd.tanggal}" size="8" readonly="">
+                        s/d
+                        <input type="text" class="tanggal" name="tanggal2" value="{$searchadd.tanggal2}" size="8" readonly="">
+                    </td>
+                    <td width="40%">
+                        <input name="save" type="submit" value="Tampilkan" />
+                        <input name="save" type="submit" value="Reset" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <form action="{$config->site_url('data_kepeg/jm/proses_generated_jm')}" method="post">
+        <input name="FS_KD_PEG" type="hidden" value="{$result.FS_KD_PEG}" />
+        <input name="FN_JM_ALL" type="hidden" value="{$result_jm_all.fn_jamed_tarif|default:0}" />
+        <input name="FN_JM_BRUTO" type="hidden" value="{$FN_JM_BRUTO}" />
+        <input name="FN_DASAR_POT" type="hidden" value="{$FN_DASAR_POT}" />
+        <input name="FN_PAJAK" type="hidden" value="{$FN_PAJAK}" />
+        <input name="FN_BAZAIS" type="hidden" value="{$FN_BAZAIS}" />
+        <input name="FN_JM_NETTO" type="hidden" value="{$FN_JM_NETTO}" />
+        <input name="FN_DASAR_POT_KOM" type="hidden" value="{$FN_DASAR_POT_KOM}" />
+        <input name="tanggal" type="hidden" value="{$searchadd.tanggal}" />
+        <input name="tanggal2" type="hidden" value="{$searchadd.tanggal2}" />
+
+        <table class="table-info" width="100%">
+            <tr class="headrow">
+                <th colspan="4">Jasa Medis</th>
+            </tr>
+            <tr>
+                <td width='15%'>Nama</td>
+                <td width='35%'>{$result.FS_NM_PEG}</td>
+                <td width='15%'>NIP</td>
+                <td width='35%'>{$result.FS_KD_PEG|default:''}</td>
+            </tr>
+            <tr>
+                <td>No Bank</td>
+                <td>{$result.FS_REK_BANK}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+        <table class="table-input" width="100%">
+            <tr class="headrow">
+                <th colspan="4">Jasa Medis</th>
+            </tr>
+            <tr>
+                <td width='20%'> Jasa Medis All</td>
+                <td width='15%'>(A)</td>
+                <td width='30%' style="text-align: right;">
+                    {$result_jm_all.fn_jamed_tarif|number_format:2:".":","}
+                </td>
+                
+                <td></td>
+            </tr>
+            <tr>
+                <td> Jasa Medis Tambahan</td>
+                <td>(B)</td>
+                <td style="text-align: right;">
+                    <input type="text" name="FN_JM_TAMBAH" size="15" value="{$searchdata.FN_JM_TAMBAH|default:'0'}" style="text-align: right;"/>
+                </td>
+                
+                <td></td>
+            </tr>
+            <tr>
+                <td> Jasa Medis TL</td>
+                <td>(C)</td>
+                <td style="text-align: right;">
+                    <input type="text" name="FN_JM_TL" size="15" value="{$searchdata.FN_JM_TL|default:'0'}" style="text-align: right;"/>
+                </td>
+                
+                <td></td>
+            </tr>
+            <tr>
+                <td>Jasa Medis Tidak Kena Pajak</td>
+                <td>(D)</td>
+                <td style="text-align: right;"
+                ><input type="text" name="FN_JM_NON_PAJAK" size="15" value="{$searchdata.FN_JM_NON_PAJAK|default:'0'}" style="text-align: right;"/>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Jasa Medis Bruto</td>
+            <td>(E) = (A+B)-C</td>
+            <td width='30%' style="text-align: right;">
+                {$FN_JM_BRUTO|number_format:2:".":","}
+            </td>
+            
+            <td></td>
+        </tr>
+        <tr>
+            <td>Dasar Potongan</td>
+            <td>(F) = (E * 50%)</td>
+            <td width='30%' style="text-align: right;">
+                {$FN_DASAR_POT|number_format:2:".":","}
+            </td>
+            
+            <td></td>
+        </tr>
+        <tr>
+            <td>Dasar Potongan Komulatif</td>
+            <td>(G)=(F + {$FN_DASAR_SBLM|number_format:2:".":","})</td>
+            <td width='30%' style="text-align: right;">
+                {$FN_DASAR_POT_KOM|number_format:2:".":","}
+            </td>
+            
+            <td></td>
+        </tr>
+        <tr>
+            <td>Pajak</td>
+            <td>(H) = (C * {$FN_TARIF})</td>
+            <td width='30%' style="text-align: right;">
+                {$FN_PAJAK|number_format:2:".":","}
+            </td>
+            
+            <td></td>
+        </tr>
+        <tr>
+            <td>Bazais</td>
+            <td>(I) = (A + B) - C - H * 2.5 %</td>
+            <td width='30%' style="text-align: right;">
+                {$FN_BAZAIS|number_format:2:".":","}
+            </td>
+            
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>Potongan</td>
+            <td>(J)</td>
+            <td style="text-align: right;">
+                <input type="text" name="FN_POTONGAN" size="15" value="{$searchdata.FN_POTONGAN|default:'0'}" style="text-align: right;"/>
+            </td>
+
+            <td></td>
+        </tr>
+        <tr>
+            <td>Keterangan Potongan</td>
+            <td></td>
+            <td style="text-align: right;">
+                <input type="text" name="FS_KET_POTONGAN" size="30" value="{$searchdata.FS_KET_POTONGAN}"/>
+            </td>
+            
+            <td></td>
+        </tr>
+        <tr>
+            <td>Jasa Medis Netto</td>
+            <td>(K) = A + B - C - H - I - J</td>
+            <td width='30%' style="text-align: right;">
+                {$FN_JM_NETTO|number_format:2:".":","}
+            </td>
+            
+            <td></td>
+        </tr>
+        <tr>
+            <td>Periode</td>
+            <td></td>
+            <td width='30%' style="text-align: right;">
+               <select name="bulan">
+                {foreach from=$rs_bulan key=i item=bulan}
+                <option value="{$i}" {if $searchdata.bulan|default:'' eq $i}selected="selected"{$bulan_name=$bulan}{/if}>{$bulan}</option>
+                {/foreach}
+            </select>
+            <select name="tahun">
+                {foreach from=$rs_tahun item=tahun}
+                <option value="{$tahun}" {if $searchdata.tahun|default:'' eq $tahun}selected="selected"{/if}>{$tahun}</option>
+                {/foreach}
+            </select>
+        </td>
+        
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <input type="submit" name="savedata" value="Generate" class="edit-button" /> 
+
+        </td>
+    </tr>
+    <tr class="submit-box">
+        <td colspan="4">
+            <input type="submit" name="savedata" value="Simpan" class="edit-button" /> 
+
+        </td>
+    </tr>
+</table>
+</form>

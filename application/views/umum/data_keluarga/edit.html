@@ -1,0 +1,71 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showOn: "both",
+            buttonImage: "{$BASEURL}/resource/doc/images/icon/calendar.gif",
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Manajemen Arsip</a><span></span>
+        <a href="{$config->site_url('surat/event')}">Event</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('surat/event/edit_process')}" method="post">
+    <input name="event_id" type="hidden" value="{$result.event_id|default:''}"/>
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Edit Kegiatan</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama Kegiatan</td>
+            <td width="85%">
+                <input type="text" name="event_name" value="{$result.event_name|default:''}" size="60" maxlength="250"/>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Pelaksanaan</td>
+            <td>
+                <input name="event_datestart" type="text" size="10" maxlength="10" value="{$result.event_datestart|default:''}" class="tanggal" readonly="readonly" style="text-align: center;" />
+                s/d
+                <input name="event_dateend" type="text" size="10" maxlength="10" value="{$result.event_dateend|default:''}" class="tanggal" readonly="readonly" style="text-align: center;" />
+            </td>
+        </tr>
+         <tr>
+            <td>Tempat</td>
+            <td>
+                <input type="text" name="event_place" value="{$result.event_place|default:''}" size="60" maxlength="250"/>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Deskripsi Event</td>
+            <td>
+                <textarea name="event_desc" maxlength="255" cols="57" rows="1">{$result.event_desc|default:''}</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>Total Berkas</td>
+            <td>
+                <a href="{$config->site_url('surat/event/upload/'|cat:$result.event_id|default:'')}"><strong>{$result.tot_files|default:''}&nbsp;&nbsp;File(s)</strong></a>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="edit-button" /> 
+                <input type="reset" name="save" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,81 @@
+<div class="breadcrum">
+  <p>
+      <a href="#">Kepegawaian</a><span></span>
+      <small>Gaji</small>
+  </p>
+  <div class="clear"></div>
+</div>
+<div class="search-box">
+  <h3><a href="#">Search</a></h3>
+  <form action="{$config->site_url('kepeg/payroll/proses_cari')}" method="post">
+      <table class="table-search" width="100%">
+          <tr>
+              <th width="5%">Filter</th>
+              <td width="95%">
+                  <select name="bulan">
+                      {foreach from=$rs_bulan key=i item=bulan}
+                      <option value="{$i}" {if $search.bulan|default:'' eq $i}selected="selected"{$bulan_name=$bulan}{/if}>{$bulan}</option>
+                      {/foreach}
+                  </select>
+                  <select name="tahun">
+                      {foreach from=$rs_tahun item=tahun}
+                      <option value="{$tahun}" {if $search.tahun|default:'' eq $tahun}selected="selected"{/if}>{$tahun}</option>
+                      {/foreach}
+                  </select>
+                  <input name="save" type="submit" value="Tampilkan" />
+                  <input name="save" type="submit" value="Reset" />
+              </td>
+          </tr>
+      </table>
+  </form>
+</div>
+<div class="navigation">
+  <div class="pageRow">
+      <div class="pageNav">
+          <ul>
+              <li class="info"></li>
+          </ul>
+      </div>
+      <div class="clear"></div>
+  </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+  <tr>
+      <th width="4%">No</th>
+      <th>NIK</th>
+      <th>Nama Pegawai</th>
+      <th>Bagian</th>
+      <th width="13%">Gaji</th>
+      <th width="15%">Aksi</th>
+  </tr>
+  {foreach from=$rs_draft item=result}
+  <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+      <td align="center">{$no++}.</td>
+      <td>{$result.FS_KD_PEG|upper}</td>
+      <td>{$result.FS_NM_PEG|upper}</td>
+      <td>{$result.FS_NM_BAGIAN|upper}</td>
+      {if $result.FN_TYPE == 0}
+      <td align="center">{$result.TOTAL|number_format:0:",":"."}</td>
+      {else}
+      <td><center>{$result.FN_BONUS_TERIMA_BERSIH|number_format:0:",":"."}</center></td>
+      {/if}
+      {if $result.FN_TYPE == 0}
+      <td align="center">
+        <a href="{$config->site_url('kepeg/payroll/slip/'|cat:$result.FS_KD_PAYROLL|default:''|cat:'/'|cat:$result.FS_KD_PEG)}" target="_blank" class="button-download">Slip Gaji</a>
+      </td>
+      {else}
+      <td align="center">
+      <a href="{$config->site_url('kepeg/payroll/slip_bonus/'|cat:$result.FS_KD_PAYROLL|default:''|cat:'/'|cat:$result.FS_KD_PEG|cat:'/'|cat:$result.FN_PERIODE)}" target="_blank" class="button-download">Slip Bonus</a>
+       </td>
+      {/if}
+
+  </tr>
+  {foreachelse}
+  <tr>
+      <td colspan="5">Data not found!</td>
+  </tr>
+  {/foreach}
+</table>

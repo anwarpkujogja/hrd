@@ -1,0 +1,95 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Laporan</a><span></span>
+        <small>Jasa Medis</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('data_kepeg/jm/proses_cari')}" method="post">
+        <table class="table-search" width="100%">
+            <tr>
+                <th width="5%">Filter</th>
+                <td width="95%">
+                    <select name="bulan">
+                        {foreach from=$rs_bulan key=i item=bulan}
+                        <option value="{$i}" {if $search.bulan|default:'' eq $i}selected="selected"{$bulan_name=$bulan}{/if}>{$bulan}</option>
+                        {/foreach}
+                    </select>
+                    <select name="tahun">
+                        {foreach from=$rs_tahun item=tahun}
+                        <option value="{$tahun}" {if $search.tahun|default:'' eq $tahun}selected="selected"{/if}>{$tahun}</option>
+                        {/foreach}
+                    </select>
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('data_kepeg/jm/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th>NIK</th>
+        <th>Nama Pegawai</th>
+        <th>No Rekening</th>
+        <th>Jasa Medis</th>
+        <th>Jasa Medis Tambahan</th>
+        <th>Jasa Medis TL</th>
+        <th>Jasa Medis Tidak Kena Pajak</th>
+        <th>Jasa Medis Bruto</th>
+        <th>Dasar Potongan</th>
+        <th>Pajak</th>
+        <th>Bazais</th>
+        <th>Potongan</th>
+        <th>Jasa Medis Netto</th>
+        <th>Aksi</th>
+    </tr>
+    {foreach from=$rs_result item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.FS_KD_PEG|upper}</td>
+        <td>{$result.FS_NM_PEG|upper}</td>
+        <td>{$result.FS_REK_BANK|upper}</td>
+        <td align="right">{$result.FN_JM_ALL|number_format:2:".":","}</td>
+        <td align="right">{$result.FN_JM_TAMBAH|number_format:2:".":","}</td>
+        <td align="right">{$result.FN_JM_TL|number_format:2:".":","}</td>
+        <td align="right">{$result.FN_JM_NON_PAJAK|number_format:2:".":","}</td>
+        <td align="right">{$result.FN_JM_BRUTO|number_format:2:".":","}</td>
+        <td align="right">{$result.FN_DASAR_POT_KOM|number_format:2:".":","}</td>
+        <td align="right">{$result.FN_PAJAK|number_format:2:".":","}</td>
+        <td align="right">{$result.FN_BAZAIS|number_format:2:".":","}</td>
+        <td align="right">{$result.FN_POTONGAN|number_format:2:".":","}</td>
+        <td align="right">{$result.FN_JM_NETTO|number_format:2:".":","}</td>
+        <td align="center">
+            <a href="{$config->site_url('data_kepeg/jm/email/'|cat:$result.FS_KD_TRS)}" class="button-edit">Email</a>
+            <a href="{$config->site_url('data_kepeg/jm/delete_process/'|cat:$result.FS_KD_TRS)}" onclick="return confirm('Apakah Data Akan Di Hapus?')" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="5">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

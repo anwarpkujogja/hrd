@@ -1,0 +1,64 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/operator')}">Users</a><span></span>
+        <small>{$result.nama_lengkap|default:''}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+   <!-- <ul>
+        <li><a href="{$config->site_url('pengaturan/operator/edit/'|cat:$user_id)}">Data Pribadi</a></li>
+        <li><a href="{$config->site_url('pengaturan/operator/account/'|cat:$user_id)}" class="active">Account Settings</a></li>
+    </ul>
+    <div class="clear"></div>-->
+    <div class="sub-content">
+        <!-- notification template -->
+        {include file="base/templates/notification.html"}
+        <!-- end of notification template-->
+        <form action="{$config->site_url('pengaturan/operator/edit_account_process')}" method="post">
+            <input name="user_id" type="hidden"  value="{$user_id|default:''}"/>
+            <table class="table-input" width="100%">
+                <tr class="headrow">
+                    <th colspan="2">Edit Account</th>
+                </tr>
+                <tr>
+                    <td width="20%">Username</td>
+                    <td width="80%">
+                        <input name="user_name_old" type="hidden" value="{$result.user_name|default:''}" />
+                        <input name="user_name" type="text" value="{$result.user_name|default:''}" size="20" maxlength="50" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td>
+                        <input name="user_pass" type="password" value="{$result.user_pass|default:''}" size="20" maxlength="30" />
+                    </td>
+                </tr>    
+                <tr class="headrow">
+                    <th colspan="2">Edit Permissions</th>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top">Select Role</td>
+                    <td>
+                        <select name="role_id" class="select2" style="width: 250px;">
+                            <option value=""></option>
+                            {foreach from=$rs_role|default:'' item=role}
+                            <option value="{$role.role_id}" {if {$result.role_id|default:''} == $role.role_id}selected="selected"{/if}>{$role.role_nm}</option>
+                            {/foreach}
+                        </select>
+
+                    </td>
+                </tr>
+                <tr class="submit-box">
+                    <td colspan="2">
+                        <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                        <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+                    </td>
+                </tr>
+            </table>
+        </form>  
+    </div>
+</div>
+
+

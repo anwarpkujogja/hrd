@@ -1,0 +1,42 @@
+<!-- javascript -->
+<script type="text/javascript">
+    $(function() {
+        $(".checked-all").click(function(){
+            var status = $(this).is(":checked");
+            if(status == true){
+                $(".r" + $(this).val()).prop('checked', true);
+            } else {
+                $(".r" + $(this).val()).prop('checked', false);
+            }
+        });
+    })
+</script>
+<!-- end of javascript -->
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="#">Navigation</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/navigation/process')}" method="post">
+    <input type="hidden" name="role_id" value="{$result.role_id|default:''}" />
+    <table class="table-view" width="100%">
+        <tr>
+            <th width="5%"></th>
+            <th width="55%">Judul Menu</th>
+            <th width="10%">Create</th>
+            <th width="10%">Read</th>
+            <th width="10%">Update</th>
+            <th width="10%">Delete</th>
+        </tr>
+        {$list_menu|default:''}
+        <tr>
+            <td colspan="6"><input type="submit" name="save" value="Simpan" class="edit-button" /></td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,42 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/jabatan')}">Jabatan</a><span></span>
+        <small>Delete Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/jabatan')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />  Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/jabatan/delete_process')}" method="post">
+    <input name="jabatan_id" type="hidden" value="{$result.jabatan_id|default:''}">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Delete Data</th>
+        </tr>
+        <tr>
+            <td width="15%">Induk Jabatan</td>
+            <td width="85%">
+                {$result.jabatan_parent|default:''}
+            </td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td>{$result.jabatan_nama}</td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save[insert]" value="Delete" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

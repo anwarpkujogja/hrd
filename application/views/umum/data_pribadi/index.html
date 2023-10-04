@@ -1,0 +1,185 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        // date picker
+        $(".tanggal").datepicker({
+            yearRange: '-90:+0',
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p><a href="#">Data Umum</a><span></span><small>Data Pribadi</small></p>
+    <div class="clear"></div>
+</div>
+<div class="head-content">
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="{$config->site_url('umum/data_pribadi/')}" class="active"> Data Pribadi</a></li>
+            <li><a href="{$config->site_url('umum/data_keluarga/')}">Data Keluarga</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('umum/data_pribadi/edit_process')}" method="post">
+    <input type="hidden" name="FS_KD_PEG" value="{$result.FS_KD_PEG|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="5">Data Pribadi</th>
+        </tr>
+        <tr>
+            <td width="15%">NIK</td>
+            <td width="30%">
+                <input name="FS_KD_PEG" type="text" value="{$result.FS_KD_PEG|default:''}" size="10" maxlength="50"
+                    disabled="" />
+            </td>
+            <td width="15%"></td>
+            <td width="30%"></td>
+        </tr>
+        <tr>
+            <td>Nama Singkat</td>
+            <td>
+                <input name="FS_NM_ALIAS" type="text" value="{$result.FS_NM_ALIAS|default:''}" size="35"
+                    maxlength="50" />
+                <em>* wajib diisi</em>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Nama Lengkap</td>
+            <td>
+                <input name="FS_NM_PEG" type="text" value="{$result.FS_NM_PEG|default:''}" size="35" maxlength="50" />
+                <em>* wajib diisi</em>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>NBM</td>
+            <td>
+                <input name="FS_KD_NIP" type="text" value="{$result.FS_KD_NIP|default:''}" size="10" maxlength="50" />
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Jenis Kelamin</td>
+            <td>
+                <select name="FB_JNS_KELAMIN">
+                    <option></option>
+                    <option value="0" {if {$result.FB_JNS_KELAMIN|default:''} eq "0"}selected="selected" {/if}>Laki -
+                        Laki</option>
+                    <option value="1" {if {$result.FB_JNS_KELAMIN|default:''} eq "1"}selected="selected" {/if}>
+                        Perempuan</option>
+                </select>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Tempat, Tanggal Lahir</td>
+            <td>
+                <input type="text" name="FS_TEMP_LAHIR" value="{$result.FS_TEMP_LAHIR|default:''}" size="35"
+                    maxlength="50" />
+                , <input type="text" name="FD_TGL_LAHIR" value="{$result.FD_TGL_LAHIR|default:''}" size="10"
+                    maxlength="10" class="tanggal" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Alamat</td>
+            <td><input type="text" name="FS_ALM_PEG" value="{$result.FS_ALM_PEG|default:''}" size="70"
+                    maxlength="100" /></td>
+        </tr>
+        <tr>
+            <td>Alamat Tinggal</td>
+            <td><input type="text" name="FS_ALM_TINGGAL_PEG" value="{$result.FS_ALM_TINGGAL_PEG|default:''}" size="70"
+                    maxlength="100" /></td>
+        </tr>
+        <tr>
+            <td>Nomor HP</td>
+            <td>
+                <input name="FS_HP_PEG" type="text" value="{$result.FS_HP_PEG|default:''}" size="35" maxlength="50" />
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Nomor Telepon</td>
+            <td>
+                <input name="FS_TLP_PEG" type="text" value="{$result.FS_TLP_PEG|default:''}" size="35" maxlength="50" />
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>
+                <input name="FS_EMAIL" type="text" value="{$result.FS_EMAIL|default:''}" size="35" maxlength="50" />
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Tanggal Mulai Bekerja</td>
+            <td>
+                {$result.FD_TGL_DINAS|date_format:"%d %B %Y"}
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Masa Kerja</td>
+            <td>
+                {$result.MasaKerja} (Tahun, Bulan, Hari)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Sisa Cuti Tahun {$tahun}</td>
+            <td>
+                {12-$rs_cuti_ambil.JUMLAH}
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Nomor KTP</td>
+            <td>
+                {$result.FS_KD_IDENTITAS|default:''}
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Nomor BPJS Kesehatan</td>
+            <td>
+                {$rs_asuransi_bpjs_peg.fs_no_referensi}
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Nomor BPJS Ketenagakerjaan</td>
+            <td>
+                {$rs_asuransi_jamsos_peg.fs_no_referensi}
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>NPWP</td>
+            <td>{$result.FS_NO_NPWP}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="5">
+                <input type="submit" name="save[insert]" value="Ubah" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

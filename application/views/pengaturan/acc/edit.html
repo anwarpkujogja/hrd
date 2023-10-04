@@ -1,0 +1,56 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".select2").select2({
+            placeholder: "Pilih",
+            allowClear: true
+        });
+    });
+</script>
+
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/acc')}">Mapping Unit Akuntansi</a><span></span>
+        <small>Add Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/acc/edit_process')}" method="post">
+    <input name="FS_KD_BAGIAN" type="hidden" value="{$result.FS_KD_BAGIAN|default:''}" />
+    <table class="table-input" width="100%">
+        <tr>
+            <th colspan="4">Add Data</th>
+        </tr>
+        <tr>
+            <td width="10%">Nama Bagian</td>
+            <td width="40%">
+                <input type="text" value="{$result.FS_NM_BAGIAN|default:''}" size="50" readonly />
+            </td>
+            <td width="10%"></td>
+            <td width="40%"></td>
+        </tr>
+        <tr>
+            <td>Kode Unit Akuntansi</td>
+            <td>
+                <select name="FS_KD_UNIT" class="select2" style="width:280px;">
+                    <option value="">--Pilih Data--</option>
+                    {foreach from=$rs_unit item=unit}
+                    <option value="{$unit.FS_KD_UNIT}" {if $result.FS_KD_UNIT eq $unit.FS_KD_UNIT} selected="selected" {/if}>{$unit.FS_NM_UNIT}</option>
+                    {/foreach}
+                </select>
+                <em>* wajib diisi</em>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

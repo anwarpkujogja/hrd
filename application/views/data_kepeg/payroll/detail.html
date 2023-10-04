@@ -1,0 +1,545 @@
+{include file="data_kepeg/payroll/add_script_js.html"}
+<div class="breadcrum">
+    <p>
+        <a href="#">Kepegawaian</a><span></span>
+        <small>Payroll</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('data_kepeg/payroll/proses_cari_detil')}" method="post">
+        <table class="table-search" width="100%">
+            <tr>
+                <th width="5%">NIK</th>
+                <td width="95%">
+                    <input type="text" name="FS_KD_PEG" value="{$search.FS_KD_PEG|default:''}" maxlength="4" size="5"/>
+                     <b>PERIODE THD</b> 
+                    <input name="tanggal" type="text" size="10" maxlength="10" value="{$search.tanggal|default:''}" class="tanggal" readonly="readonly" style="text-align: center;" />
+                    <input name="tanggal2" type="text" size="10" maxlength="10" value="{$search.tanggal2|default:''}" class="tanggal" readonly="readonly" style="text-align: center;" />
+                    <b>Cuti Besar</b> 
+                    <select id="is_cuti" name="is_cuti">
+                        <option value="0">Tidak</option>
+                        <option value="1">Ya</option>
+                    </select>
+                    <b>Periode Lembur</b>
+                   
+                        <select name="periode_lembur">
+                           <option value="">--select--</option>
+                            {foreach from=$rs_bulan key=i item=bulan}
+                            <option value="{$i}" {if $search.periode_lembur|default:'' eq $i}selected="selected"{/if}>{$bulan}</option>
+                            {/foreach}
+                        </select>
+
+                    <b>Periode Overtime</b>
+                       <select name="periode_overtime">
+                            <option value="">--select--</option>
+                            {foreach from=$rs_bulan key=i item=bulan}
+                            <option value="{$i}" {if $search.periode_overtime|default:'' eq $i}selected="selected"{/if}>{$bulan}</option>
+                            {/foreach}
+                        </select>
+                  <!--  <b>LB.BIASA</b>     
+                    <input type="text" name="jam_lembur" value="{$search.jam_lembur|default:''}" maxlength="4" size="5"/>Jam
+                   
+                    <b>LB.LIBUR</b> 
+                    <input type="text" name="jam_lembur_l" value="{$search.jam_lembur_l|default:''}" maxlength="4" size="5"/>Jam-->
+                    <input name="save" type="submit" value="Hitung" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('data_kepeg/payroll/add_payroll_process')}" method="post">
+    <input name="MaKer" type="hidden" value="{$result.MasaKerja}" />
+    <input name="FS_KD_PEG" type="hidden" value="{$result.FS_KD_PEG}" />
+    <input name="FS_KD_BAGIAN" type="hidden" value="{$result.FS_KD_BAGIAN}" />
+    <table class="table-info" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Slip Payroll</th>
+        </tr>
+        <tr>
+            <td width='15%'>Nama</td>
+            <td width='35%'>{$result.FS_NM_PEG}</td>
+            <td width='15%'>NIP</td>
+            <td width='35%'>{$result.FS_KD_PEG|default:''}</td>
+        </tr>
+        <tr>
+            <td>Bagian</td>
+            <td>{$result.FS_NM_BAGIAN}</td>
+            <td>Pangkat / Golongan</td>
+            <td>{$result.FS_KD_GOLONGAN}</td>
+        </tr>
+        <tr>
+            <td>Masa Kerja</td>
+            <td>{$result.MasaKerja} (Tahun-Bulan-Hari)</td>
+            <td>No Bank</td>
+            <td>{$result.FS_REK_BANK}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+        <!-- Rumus GAJI -->
+        
+        <!-- tunjangan suami/istri -->
+        {if ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.TunjSuami eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjsuami value="{0.05*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.TunjIstri eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjsuami value="{0.05*{$result.FN_GAJI_POKOK}}"}
+        {else}
+        {assign var=tjsuami value='0'}
+        {/if}
+
+
+        <!-- tunjangan anak MAX 3 Anak -->
+        {if ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{1*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '2') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{2*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '3') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{3*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak ge '3') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{3*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{1*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak eq '2') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{2*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak eq '3') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{3*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak ge '3') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{3*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{1*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak eq '2') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{2*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak eq '3') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{3*0.02*{$result.FN_GAJI_POKOK}}"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak ge '3') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjanak value="{3*0.02*{$result.FN_GAJI_POKOK}}"}
+        {else}
+        {assign var=tjanak value='0'}
+        {/if}
+
+        <!-- PTKP -->
+        {if ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.FB_JNS_KELAMIN eq '1')}
+        {assign var=ptkp value="54000000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.FB_JNS_KELAMIN eq '0') AND ($result.JumlahAnak eq '0')}
+        {assign var=ptkp value="58500000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.FB_JNS_KELAMIN eq '0') AND ($result.JumlahAnak eq '1')}
+        {assign var=ptkp value="63000000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.FB_JNS_KELAMIN eq '0') AND ($result.JumlahAnak eq '2')}
+        {assign var=ptkp value="67500000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.FB_JNS_KELAMIN eq '0') AND ($result.JumlahAnak eq '3')}
+        {assign var=ptkp value="72000000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.FB_JNS_KELAMIN eq '0') AND ($result.JumlahAnak ge '3')}
+        {assign var=ptkp value="72000000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak eq '1')}
+        {assign var=ptkp value="58500000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak eq '2')}
+        {assign var=ptkp value="63000000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak eq '3')}
+        {assign var=ptkp value="67500000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak ge '3')}
+        {assign var=ptkp value="67500000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak eq '1')}
+        {assign var=ptkp value="58500000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak eq '2')}
+        {assign var=ptkp value="63000000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak eq '3')}
+        {assign var=ptkp value="67500000"}
+        {elseif ($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak ge '3')}
+        {assign var=ptkp value="67500000"}
+       
+        {else}
+        {assign var=ptkp value='54000000'}
+        {/if}
+
+        <!-- tunjangan beras MAX 3 anak dan status tetap?-->
+        {if ($result.FS_KD_STATUS_KAWIN_DK eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=tjberas value="{10*{12000}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.FS_KD_STATUS_PEG_RS eq '8') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="0"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '0') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {8*{12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '1') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {8*{12000}} + {1*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '2') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {8*{12000}} + {2*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '3') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {8*{12000}} + {3*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak ge '3') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {8*{12000}} + {3*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '0') AND ($result.FS_KD_STATUS_PEG_RS eq '5') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {8*{12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '1') AND ($result.FS_KD_STATUS_PEG_RS eq '5') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {8*{12000}} + {1*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '2') AND ($result.FS_KD_STATUS_PEG_RS eq '5') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {8*{12000}} + {2*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak eq '3') AND ($result.FS_KD_STATUS_PEG_RS eq '5') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {8*{12000}} + {3*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.JumlahAnak ge '3') AND ($result.FS_KD_STATUS_PEG_RS eq '5') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {8*{12000}} + {3*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak eq '1') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {1*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak eq '2') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} +  {2*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak eq '3') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} +  {3*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.JumlahAnak ge '3') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} +  {3*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak eq '1') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} + {1*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak eq '2') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} +  {2*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak eq '3') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} +  {3*{5*12000}}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.JumlahAnak ge '3') AND ($result.FS_KD_STATUS_PEG_RS eq '1') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{{10*{12000}} +  {3*{5*12000}}}"}
+        {elseif (($result.$result.FS_KD_STATUS_PEG_RS eq '4') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{10*{12000}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{10*{12000}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '2') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{10*{12000}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '3') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{10*{12000}}"}
+        {elseif (($result.FS_KD_STATUS_KAWIN_DK eq '4') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjberas value="{10*{12000}}"}
+        {else}  
+        {assign var=tjberas value='0'}
+        {/if}
+
+
+        <!--DAPENMUH PENDAPATAN-->
+        {if (($result.FS_KD_STATUS_PEG_RS eq '1') OR  ($result.FS_KD_STATUS_PEG_RS eq '4') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=tjdapenmuh value="{{0.09710*{$result.FN_GAJI_POKOK}}|ceil}"}
+        {else}
+        {assign var=tjdapenmuh value='0'}
+        {/if}
+
+
+        <!--INFAQ PP-->
+        {if ($result.FS_KD_STATUS_PEG_RS neq '3')}
+        {assign var=infaqpp value="{{0.025 *{$result.FN_GAJI_POKOK + $tjsuami + $tjanak + $tjberas + $result.FN_TUNJANGAN1 + $result.FN_TUNJANGAN2 + $result.FN_TUNJANGAN4 + {{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}}}|ceil}"}
+        {else}
+        {assign var=infaqpp value='0'}
+        {/if}
+       
+
+        <!--DAPENMUH PENGURANGAN-->
+        {if (($result.FS_KD_STATUS_PEG_RS eq '1') OR  ($result.FS_KD_STATUS_PEG_RS eq '4') AND ($result.FS_KD_STATUS_PEG_RS neq '3'))}
+        {assign var=dapenmuh value="{{0.05*{$result.FN_GAJI_POKOK}}|ceil}"}
+        {else}
+        {assign var=dapenmuh value='0'}
+        {/if}
+
+
+        <!--KETERANGAN-->
+        <!--TUNJANGAN 1 = TUNJANGAN JABATAN (SPV, MANAGER)-->
+        <!--TUNJANGAN 2 = TUNJANGAN FUNGSIONAL -->
+        <!--TUNJANGAN 3 = TUNJANGAN PROFESI -->
+        <!--TUNJANGAN 4 = TUNJANGAN MAKAN -->
+        <!--TUNJANGAN 5 = TUNJANGAN PENDIDIKAN -->
+        <!--TUNJANGAN 8 = TUNJANGAN TKP -->    
+        <!--LEMBUR HARI BIASA-->
+
+      <!--  {if ($search.jam_lembur eq '2')}
+        {assign var=tjlembur value="{{{2*1.5*1/173}*{{$result.FN_GAJI_POKOK}+{$tjsuami}+{$tjanak}+{$tjberas}+{$result.FN_TUNJANGAN1}+{$result.FN_TUNJANGAN2}+{$result.FN_TUNJANGAN3}+{$result.FN_TUNJANGAN4}+{$result.FN_TUNJANGAN8}+{{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}}}|ceil}"}
+        {elseif ($search.jam_lembur gte '3')}
+        {assign var=tjlembur value='0'}
+      
+         {else}
+         {assign var=tjlembur value="{{{{$search.jam_lembur - 2}*2*1/173}*{{$result.FN_GAJI_POKOK}+{$tjsuami}+{$tjanak}+{$tjberas}+{$result.FN_TUNJANGAN1}+{$result.FN_TUNJANGAN2}+{$result.FN_TUNJANGAN3}+{$result.FN_TUNJANGAN4}+{$result.FN_TUNJANGAN8}+{{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}}} + {{2*1.5*1/173}*{{$result.FN_GAJI_POKOK}+{$tjsuami}+{$tjanak}+{$tjberas}+{$result.FN_TUNJANGAN1}+{$result.FN_TUNJANGAN2}+{$result.FN_TUNJANGAN3}+{$result.FN_TUNJANGAN4}+{$result.FN_TUNJANGAN8}+{{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}}}|ceil}"}
+
+        {/if}-->
+        {if ($search.jam_lembur eq '2')}
+        {assign var=tjlembur value="{{{2*1.5*1/173}*{{$result.FN_GAJI_POKOK}+{$tjsuami}+{$tjanak}+{$tjberas}+{$result.FN_TUNJANGAN1}+{$result.FN_TUNJANGAN2}+{$result.FN_TUNJANGAN3}+{$result.FN_TUNJANGAN4}+{$result.FN_TUNJANGAN8}+{{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}}}|ceil}"}
+        {elseif ($search.jam_lembur gte '3')}
+        {assign var=tjlembur value='0'}
+        {else}
+        {assign var=tjlembur value='1'}
+
+        {/if}
+         <!--terlambat-->
+       
+         {if ($results.fn_msk_terlambat+$results.fn_plg_lebih_awal +fn_plg_lebih_awal gte '11')}
+         {assign var=tjthd value="0"}
+         {else}
+         {assign var=tjthd value="{27500 * {$results.fn_jml_msk_pgi_tepat} 
+         + 27500 * {$results.fn_jml_msk_siang_tepat}
+         + 32500 * {$results.fn_jml_msk_mlm_tepat}
+         + 2*27500 * {$results.fn_jml_msk_pgi_tepat_k}
+         + 2*27500 * {$results.fn_jml_msk_siang_tepat_k}
+         + 2*32500 * {$results.fn_jml_msk_mlm_tepat_k}}"}
+         {/if}
+
+         <!--CUTI BESAR-->
+         {if ($search.is_cuti eq '1')}
+         {assign var=tjcuti value={{$result.FN_GAJI_POKOK}+{$tjsuami}+{$tjthd}+{$tjanak}+{$tjberas}+{$result.FN_TUNJANGAN1}+{$result.FN_TUNJANGAN2}+{$result.FN_TUNJANGAN3}+{$result.FN_TUNJANGAN4}+{{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}+{$result.FN_TUNJANGAN8}}|ceil}
+         {else}
+         {assign var=tjcuti value='0'}
+         {/if}
+
+         <!--LEMBUR HARI-->
+         {if ($search.jam_lembur_l neq 'null')}
+         {assign var=tjlembur_l value="{{{{$search.jam_lembur_l}*2*1/173}*{{$result.FN_GAJI_POKOK}+{$tjsuami}+{$tjanak}+{$tjberas}+{$result.FN_TUNJANGAN1}+{$result.FN_TUNJANGAN2}+{$result.FN_TUNJANGAN3}+{$result.FN_TUNJANGAN4}+{$result.FN_TUNJANGAN8}+{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}/12}}}|ceil}"}
+         {else}
+         {assign var=tjlembur_l value='0'}
+         {/if}
+
+         <!--Pendidikan-->
+
+         {if ($result.FS_KD_STATUS_PEG_RS neq '3')}
+         {assign var=tjpendidikan value="{{{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}|ceil}"}
+         {else}
+         {assign var=tjpendidikan value='0'}
+         {/if}
+
+
+         <!--INFAQPP-->
+
+         {if ($result.FS_KD_STATUS_PEG_RS neq '3')}
+         {assign var=infaqpp value="{{0.025 * {$result.FN_GAJI_POKOK + $tjsuami + $tjanak + $tjberas + $result.FN_TUNJANGAN1 + $result.FN_TUNJANGAN2 + $result.FN_TUNJANGAN4 + $result.FN_TUNJANGAN8 + {{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}}}|ceil}"}
+         {else}
+         {assign var=infaqpp value='0'}
+         {/if}
+
+
+         <!--BPJS KES-->
+         {if ($result.FS_KD_STATUS_PEG_RS neq '3')}
+         {assign var=bpjskes value="{{0.05 * {$result.FN_GAJI_POKOK + $tjsuami + $tjanak + $tjberas + $result.FN_TUNJANGAN1 + $result.FN_TUNJANGAN2 + $result.FN_TUNJANGAN4 + $result.FN_TUNJANGAN8 + {{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}}}|ceil}"}
+         {else}
+         {assign var=bpjskes value="{{0.05 * {$result.FN_GAJI_POKOK}}|ceil}"}
+         {/if}
+
+
+         <!--BPJS TK PEND-->
+         {if ($result.FS_KD_STATUS_PEG_RS neq '3')}
+         {assign var=bpjstkpend value="{{0.0624 * {$result.FN_GAJI_POKOK + $tjsuami + $tjanak + $tjberas + $result.FN_TUNJANGAN1 + $result.FN_TUNJANGAN2 + $result.FN_TUNJANGAN4 + $result.FN_TUNJANGAN8 + {{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}}}|ceil}"}
+         {else}
+         {assign var=bpjstkpend value="{{0.0624 * {$result.FN_GAJI_POKOK}}|ceil}"}
+         {/if}
+
+         <!--BPJS TK POT-->
+
+         {if ($result.FS_KD_STATUS_PEG_RS neq '3')}
+         {assign var=bpjstkpot value="{{0.03 * {$result.FN_GAJI_POKOK + $tjsuami + $tjanak + $tjberas + $result.FN_TUNJANGAN1 + $result.FN_TUNJANGAN2 + $result.FN_TUNJANGAN4 + $result.FN_TUNJANGAN8 + {{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}}}|ceil}"}
+         {else}
+         {assign var=bpjstkpot value="{{0.03 * {$result.FN_GAJI_POKOK}}|ceil}"}
+         {/if}
+
+
+    <!--<table class="table-input" width="100%">
+            <tr class="headrow">
+                <th colspan="4">Data Lembur</th>
+            </tr>
+            <tr>
+              <td>PERIODE</td>
+            </tr>
+    </table>-->
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Data Pendapatan</th>
+        </tr>
+        <tr>
+          <td>PERIODE</td>
+          <td><select name="FN_PERIODE">
+                    <option value="">--select periode--</option>
+                    {foreach from=$rs_bulan key=i item=bulan}
+                    <option value="{$i}" {if $search.bulan|default:'' eq $i}selected="selected"{/if}>{$bulan}</option>
+                    {/foreach}
+              </select>
+          </td>
+        </tr>
+        <tr>
+            <td>GAJI POKOK	</td>
+            <td><input name="FN_GAPOK" value="{$result.FN_GAJI_POKOK}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN SUAMI/ISTRI</td>
+            <td><input name="FN_TUNJ_SUAMI" value="{$tjsuami}" type="text"/> </td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN ANAK</td>
+            <td> <input name="FN_TUNJ_ANAK" value="{$tjanak}" type="text"/>
+            </td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN DAPENMUH RS	</td>
+            <td> <input name="FN_TUNJ_DAPENMUH" value="{$tjdapenmuh}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN BERAS	</td>
+            <td> <input name="FN_TUNJ_BERAS" value="{$tjberas}" type="text"/></td>
+        <tr>
+            <td>TUNJANGAN JABATAN</td>
+            <td> <input name="FN_TUNJ_JABATAN" value="{$result.FN_TUNJANGAN1}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN BPJS KESEHATAN</td>
+            <td> <input name="FN_TUNJ_BPJS" value="{$bpjskes}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN BPJS TK</td>
+            <td> <input name="FN_TUNJ_BPJS_TK" value="{$bpjstkpend}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN FUNGSIONAL</td>
+            <td> <input name="FN_TUNJ_FUNGSIONAL" value="{$result.FN_TUNJANGAN2}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN PROFESI</td>
+            <td> <input name="FN_TUNJ_PROFESI" type="text" value="{$result.FN_TUNJANGAN3}"/></td>
+        </tr>
+       <!--<tr>
+            <td>TUNJANGAN THD</td>
+            <td> <input name="FN_TUNJ_THD" value="{{27500 * {$results.fn_jml_msk_pgi_tepat} 
+                                                    + 27500 * {$results.fn_jml_msk_siang_tepat}
+                                                    +  32500 * {$results.fn_jml_msk_mlm_tepat}
+                                                    +  2*27500 * {$results.fn_jml_msk_pgi_tepat_k}
+                                                    +  2*27500 * {$results.fn_jml_msk_siang_tepat_k}
+                                                    +  2*32500 * {$results.fn_jml_msk_mlm_tepat_k}}}" type="text"/>
+                                                    Jumlah Hadir Pagi: {$results.fn_jml_msk_pgi_tepat} ,
+                                                                 Sore:{$results.fn_jml_msk_siang_tepat} , 
+                                                                 Malam:{$results.fn_jml_msk_mlm_tepat},
+                                                                 | Koor.Pagi : {$results.fn_jml_msk_pgi_tepat_k},
+                                                                 Koor.Siang : {$results.fn_jml_msk_siang_tepat_k},
+                                                                 Koor.Malam : {$results.fn_jml_msk_mlm_tepat_k},
+
+                                                                 Terlambat :  {$results.fn_msk_terlambat},  
+                                                                 Pulang Awal :  {$results.fn_plg_lebih_awal}, 
+                                                                 Tidak absen :  {$results.fn_tidak_hadir}, 
+                                                
+                                                </td>
+            
+        </tr>-->
+        <tr>
+                <td>TUNJANGAN THD	</td>
+                <td> <input name="FN_TUNJ_THD" value="{$tjthd}" type="number"/></td>
+            </tr>
+        <tr>
+            <td>TUNJANGAN THD MANUAL	</td>
+            <td> <input name="FN_TUNJ_THD_MAN" value="" type="number"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN LEMBUR </td>
+            <td> <input name="FN_TUNJ_LEMBUR" value="{$lembur.TOTLEMBUR}" type="text"/></td>
+        </tr>
+
+        <tr>
+            <td>TUNJANGAN OVERTIME </td>
+            <td> <input name="FN_TUNJ_OVERTIME" value="{$overtime.TOTOVERTIME}" type="text"/></td>
+        </tr>
+        
+        <tr>
+            <td>TUNJANGAN PENDIDIKAN</td>
+            <td> <input name="FN_TUNJ_PENDIDIKAN" value="{$tjpendidikan}" type="text"/></td>
+           
+        </tr>
+        <tr>
+            <td>TUNJANGAN MAKAN</td>
+            <td> <input name="FN_TUNJ_MAKAN" type="text"  value="{$result.FN_TUNJANGAN4}"/></td>
+        </tr>
+        <tr>
+            <td>TKP</td>
+            <td><input name="FN_TUNJ_TKP" type="text" value="{$result.FN_TUNJANGAN8}"/></td>  
+        </tr>       
+        <tr>
+            <td>IPK</td>
+            <td><input name="FN_TUNJ_IPK" type="text" /></td>  
+        </tr>       
+        <tr>
+            <td>CUTI BESAR</td>
+            <td><input name="FN_TUNJ_CUTI" type="text" value="{$tjcuti}" /></td>  
+        </tr>   
+        <tr>
+            <td>RAPEL</td>
+            <td><input name="FN_TUNJ_RAPEL" type="text" />
+            Ket:
+           <input name="FN_KET_RAPEL" type="text" /></td>  
+        </tr>  
+        <tr>
+            <td>PULSA</td>
+            <td><input name="FN_TUNJ_PULSA" value="{$result.FN_TJ_PULSA}" type="text" /></td>  
+        </tr>       
+        <tr>
+            <td>INSENTIF HR RAYA</td>
+            <td><input name="FN_TUNJ_IHR" type="text" /></td>  
+        </tr> 
+        <tr>
+            <td>ON_CALL</td>
+            <td><input name="FN_TUNJ_ONCALL" type="text" /></td>  
+        </tr>      
+         <tr class="headrow">
+            <th colspan="4">Data Pengurangan</th>
+        </tr>
+        <tr>
+            <td>PPH 21</td>
+            <td> <input name="FN_PPH_21" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BPJS KESEHATAN</td>
+            <td> <input name="FN_BPJS" value="{$bpjskes}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BPJS_TK / JAMSOSTEK</td>
+            <td> <input name="FN_BPJS_TK" value="{$bpjstkpot}" type="text"/></td>
+      </tr>
+        <tr>
+            <td>BPD KONVENSIONAL</td>
+            <td> <input name="FN_BRI" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BPD SYARIAH</td>
+            <td> <input name="FN_BPD" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BAROKAH</td>
+            <td> <input name="FN_BAROKAH" type="text"/></td>
+        </tr>
+        <tr>
+            <td>FARMASI</td>
+            <td> <input name="FN_FARMASI" type="text"/></td>
+        </tr>
+        <tr>
+            <td>AL-IKHLAS</td>
+            <td> <input name="FN_AL_IKHLAS" type="text"/></td>
+        </tr>
+        <tr>
+            <td>PERUMAHAN</td>
+            <td> <input name="FN_PERUMAHAN" type="text"/></td>
+        </tr>
+        <tr>
+            <td>INFAQ PP</td>
+           <!-- <td> <input name="FN_INFAQ_PP" value="{{0.025 * {$result.FN_GAJI_POKOK + $tjsuami + $tjanak + $tjberas + $result.FN_TUNJANGAN1 + $result.FN_TUNJANGAN2 + $result.FN_TUNJANGAN4 + $result.FN_TUNJANGAN8 + {{2*{$result.FN_GAJI_POKOK + $tjberas + $result.FN_TUNJANGAN2 + $result.FN_TUNJANGAN8 + $tjsuami + $tjanak +  $result.FN_TUNJANGAN1  + $result.FN_TUNJANGAN3 + $result.FN_TUNJANGAN4 +  100000 + $result.FN_TUNJANGAN8}}/12}}}|ceil}" type="text"/></td>-->
+             <td> <input name="FN_INFAQ_PP" value="{$infaqpp}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>DAPENMUH</td>
+            <td> <input name="FN_DAPENMUH" value="{$dapenmuh}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>LAIN-LAIN</td>
+            <td> <input name="FN_LAIN_LAIN" type="text"/>
+                Ket:
+                <input name="FN_KET_POT" type="text" /></td>  
+        </tr>    
+        <tr>
+            <td>PTKP</td>
+            <td> <input name="FN_PTKP" value="{$ptkp}" type="text" readonly/>
+              
+        </tr>    
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Simpan" class="edit-button" /> 
+            </td>
+        </tr>
+    </table>
+</form>

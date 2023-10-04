@@ -1,0 +1,68 @@
+<div class="login-body">
+    {if $login_st|default:'' eq ''}
+    <div class="alert">
+        <h2><img src="{$BASEURL}resource/doc/images/icon/alert.png" height="16" alt="" style="vertical-align: middle;" /> You are entering restricted area</h2>
+        <p><strong>Please Login</strong> First to access this application!</p>
+    </div>
+    <div class="content-left">
+        <form action="{$config->site_url('login/uptlogin/login_process')}" method="post">
+            <label for="aid_username">Username :</label>
+            <input type="text" name="username" maxlength="30" />
+            <br />
+            <label for="aid_password">Password :</label>
+            <input type="password" name="pass" maxlength="30" />
+            <div class="clear"></div>
+            <div class="action">
+                <input type="submit" value="" name="save[login]" />
+            </div>
+            <div class="clear"></div>            
+        </form>
+    </div>
+    {elseif $login_st|default:'' eq 'error'}
+    <div class="alert">
+        <h2><img src="{$BASEURL}resource/doc/images/icon/alert.png" height="16" alt="" style="vertical-align: middle;" /> Login Failed</h2>
+        <p><strong>Your account is not found</strong>, Please Try Again or contact your administrator</p>
+    </div>
+    <div class="content-left">
+        <form action="{$config->site_url('login/uptlogin/login_process')}" method="post">
+            <label for="aid_username">Username :</label>
+            <input type="text" name="username" maxlength="30" />
+            <br />
+            <label for="aid_password">Password :</label>
+            <input type="password" name="pass" maxlength="30" />
+            <div class="clear"></div>
+            <div class="action">
+                <input type="submit" value="" name="save[login]" />
+            </div>
+            <div class="clear"></div>     
+        </form>
+    </div>
+    {elseif $login_st|default:'' eq 'locked'}
+    <div class="alert">
+        <h2><img src="{$BASEURL}resource/doc/images/icon/alert.png" height="16" alt="" style="vertical-align: middle;" /> Login Failed</h2>
+        <p><strong>Your account has been locked</strong>, Please contact your administrator to activate your account</p>
+    </div>
+    <div class="content-left">
+        <form action="{$config->site_url('login/uptlogin/login_process')}" method="post">
+            <label for="aid_username">Username :</label>
+            <input type="text" name="username" maxlength="30" />
+            <br />
+            <label for="aid_password">Password :</label>
+            <input type="password" name="pass" maxlength="30" />
+            <div class="clear"></div>
+            <div class="action">
+                <input type="submit" value="" name="save[login]" />
+            </div>
+            <div class="clear"></div>     
+        </form>
+    </div>
+    {elseif $login_st|default:'' eq 'still'}
+    <div class="alert">
+        <h2><img src="{$BASEURL}resource/doc/images/icon/alert.png" height="16" alt="" style="vertical-align: middle;" />You are entering restricted area</h2>
+        <p><strong>You are still login!</strong>, back to main menu <a href="javascript:window.history.back()">click here</a></p>
+    </div>
+    {/if}
+</div>
+<div style="font-size: 10px;margin: 15px 0;opacity: 0.5;text-align: center;position: absolute;height: 281px;width: 388px;">
+    <span style="text-align: center;">Copyright &copy; 2013 KOBU Wilayah IV</span>
+</div>

@@ -1,0 +1,65 @@
+<div class="breadcrum">
+    <p><a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/format_file')}">File Configuration</a><span></span>
+        <small>Delete Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/format_file/index')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/format_file/delete_process')}" method="post">
+    <input name="id" type="hidden" value="{$result.id|default:''}">
+    <table class="table-input" width="100%">
+        <tr>
+            <td colspan="2"><b>Apakah anda yakin akan menghapus data dibawah ini?</b></td>
+        </tr>
+        <tr>
+            <td width="20%">Lokasi Folder</td>
+            <td width="80%">{$result.dir_location|default:''}</td>
+        </tr>
+        <tr>
+            <td>Jenis/td>
+            <td>{$result.jenis|default:''}</td>
+        </tr>
+        <tr>
+            <td>Kode</td>
+            <td>{$result.kode_format|default:''}</td>
+        </tr>
+        <tr>
+            <td>Header Text</td>
+            <td>{$result.header|default:''}</td>
+        </tr>
+        <tr>
+            <td>Idx Header Row</td>
+            <td>{$result.header_row_index|default:''}</td>
+        </tr>
+        <tr>
+            <td>Idx Header Col</td>
+            <td>{$result.header_column_index|default:''}</td>
+        </tr>
+        <tr>
+            <td>Idx First Content</td>
+            <td>{$result.first_content_row|default:''}</td>
+        </tr>
+        <tr>
+            <td>Selisih Footer</td>
+            <td>{$result.selisih_count_footer|default:''}</td>
+        </tr>
+        <tr>
+            <td>Keterangan</td>
+            <td>{$result.ket|default:''}</td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2"><input type="submit" name="save[insert]" value="Hapus" class="edit-button" /></td>
+        </tr>
+    </table>
+</form>

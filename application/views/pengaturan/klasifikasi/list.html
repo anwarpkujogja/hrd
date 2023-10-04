@@ -1,0 +1,88 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Klasifikasi Arsip</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('pengaturan/klasifikasi/proses_cari')}" method="post">
+        <table class="table-search" width="100%">
+            <tr>
+                <th width="5%">Kategori</th>
+                <td width="10%">
+                    <select name="klas_id">
+                        <option value="">-- All --</option>
+                        {foreach from=$rs_kategori item=data}
+                        <option value="{$data.klas_id}" {if $search.klas_id eq $data.klas_id}selected="selected"{/if}>{$data.klas_name|upper}</option>
+                        {/foreach}
+                    </select>
+                </td>
+                <th width="10%">Kode Klasifikasi</th>
+                <td width="15%">
+                    <input name="klasifikasi_cd" type="text" value="{$search.klasifikasi_cd|default:''}" size="25" maxlength="50" />
+                </td>
+                <td width="60%">
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$pagination.total|default:0}</strong> Data Klasifikasi&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/klasifikasi/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="20%">Kategori</th>
+        <th width="15%">Kode</th>
+        <th width="50%">Klasifikasi</th>
+        <th width="11%"></th>
+    </tr>
+    {foreach from=$rs_id item=result}
+    {$level = $result.klasifikasi_cd|strlen}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td align="center">{$result.klas_name|upper}</td>
+        <td>{$result.klasifikasi_cd|upper}</td>
+        <td>
+            {if $level eq '2'}
+            <b>{$result.klasifikasi_name|upper}</b>
+            {/if}
+            {if $level eq '5'}
+            -- {$result.klasifikasi_name|upper}
+            {/if}
+            {if $level eq '9'}
+            ----- {$result.klasifikasi_name|upper}
+            {/if}
+        </td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/klasifikasi/edit/'|cat:$result.klasifikasi_cd|default:'')}" class="button-edit">Edit</a>
+            <a href="{$config->site_url('pengaturan/klasifikasi/delete/'|cat:$result.klasifikasi_cd|default:'')}" class="button-hapus">Hapus</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="5">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

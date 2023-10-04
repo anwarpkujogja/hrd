@@ -1,0 +1,104 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p><a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/format_file')}">File Configuration</a><span></span>
+        <small>Add Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/format_file/index')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />Back</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/format_file/add_process')}" method="post">
+    <table class="table-input" width="100%">
+        <tr>
+            <td width="20%">Lokasi Folder</td>
+            <td width="80%">
+                <input name="dir_location" type="text" value="{$result.dir_location|default:''}" size="60" maxlength="80" />
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Jenis</td>
+            <td>
+                <input name="jenis" type="text" value="{$result.jenis|default:''}" size="30" maxlength="200" />
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Kode Format</td>
+            <td>
+                <input name="kode_format" type="text" value="{$result.kode_format|default:''}" size="30" maxlength="200" />
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Header Text</td>
+            <td>
+                <textarea name="header" type="text" cols="25" rows="2" >{$result.header|default:''}</textarea>
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Idx Header Row</td>
+            <td>
+                <input name="header_row_index" type="text" value="{$result.header_row_index|default:''}" size="5" maxlength="10" />
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Idx Header Col</td>
+            <td>
+                <input name="header_column_index" type="text" value="{$result.header_column_index|default:''}" size="5" maxlength="10" />
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Idx First Content</td>
+            <td>
+                <input name="first_content_row" type="text" value="{$result.first_content_row|default:''}" size="5" maxlength="10" />
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Selisih Footer</td>
+            <td>
+                <input name="selisih_count_footer" type="text" value="{$result.selisih_count_footer|default:''}" size="5" maxlength="10" />
+                <small>* wajib diisi</small>
+            </td>
+        </tr>
+        <tr>
+            <td>Keterangan</td>
+             <td>
+                <textarea name="ket" type="text" cols="25" rows="2" >{$result.ket|default:''}</textarea>
+            </td>  
+        </tr>
+        
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,206 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Kepegawaian</a><span></span>
+        <small>IPK</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('data_kepeg/ipk/edit_process')}" method="post">
+    <input name="FS_KD_TRS" type="hidden" value="{$result.FS_KD_TRS}" />
+    <table class="table-info" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Slip IPK</th>
+        </tr>
+        <tr>
+            <td width='15%'>Nama</td>
+            <td width='35%'>{$result.FS_NM_PEG}</td>
+            <td width='15%'>NIP</td>
+            <td width='35%'>{$result.FS_KD_PEG|default:''}</td>
+        </tr>
+        <tr>
+            <td>Bagian</td>
+            <td>{$result.FS_NM_BAGIAN}</td>
+            <td>Pangkat / Golongan</td>
+            <td>{$result.FS_KD_GOLONGAN}</td>
+        </tr>
+        <tr>
+            <td>Masa Kerja</td>
+            <td>{$result.MasaKerja} Tahun</td>
+            <td>No Bank</td>
+            <td>{$result.FS_REK_BANK}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <!-- Rumus IPK -->
+    <!-- pendidikan -->
+    {if ($result.FS_KD_TINGKAT_IJAZAH eq '01') OR ($result.FS_KD_TINGKAT_IJAZAH eq '02') OR ($result.FS_KD_TINGKAT_IJAZAH eq '03') OR ($result.FS_KD_TINGKAT_IJAZAH eq '04')}
+    {assign var=pendidikan value='2.25'}
+    {elseif ($result.FS_KD_TINGKAT_IJAZAH eq 'D1')}
+    {assign var=pendidikan value='2.5'}
+    {elseif ($result.FS_KD_TINGKAT_IJAZAH eq 'D3')}
+    {assign var=pendidikan value='3.5'}
+    {elseif ($result.FS_KD_TINGKAT_IJAZAH eq 'S1') OR ($result.FS_KD_TINGKAT_IJAZAH eq 'D4')}
+    {assign var=pendidikan value='4.5'}
+    {elseif ($result.FS_KD_TINGKAT_IJAZAH eq 'A4')}
+    {assign var=pendidikan value='5.5'}
+    {elseif ($result.FS_KD_TINGKAT_IJAZAH eq 'S2') OR ($result.FS_KD_TINGKAT_IJAZAH eq 'S3')}
+    {assign var=pendidikan value='6'}
+    {else}
+    {assign var=pendidikan value='0'}
+    {/if}
+    <!-- jabatan -->
+    {if ($result.FS_KD_JENIS_JABATAN eq '8')}
+    {assign var=jabatan value='2.5'}
+    {elseif ($result.FS_KD_JENIS_JABATAN eq '7')}
+    {assign var=jabatan value='3.5'}
+    {elseif ($result.FS_KD_JENIS_JABATAN eq '6')}
+    {assign var=jabatan value='4.5'}
+    {elseif ($result.FS_KD_JENIS_JABATAN eq '5')}
+    {assign var=jabatan value='5.5'}
+    {elseif ($result.FS_KD_JENIS_JABATAN eq '4')}
+    {assign var=jabatan value='6.5'}
+    {elseif ($result.FS_KD_JENIS_JABATAN eq '3')}
+    {assign var=jabatan value='7.5'}
+    {else}
+    {assign var=jabatan value='0'}
+    {/if}
+    <!-- risiko kerja -->
+    {if ($result.FS_KD_GRUP_BAGIAN eq '6')}
+    {assign var=bagian value='8'}
+    {elseif ($result.FS_KD_GRUP_BAGIAN eq '5')}
+    {assign var=bagian value='9'}
+    {elseif ($result.FS_KD_GRUP_BAGIAN eq '4')}
+    {assign var=bagian value='11'}
+    {elseif ($result.FS_KD_GRUP_BAGIAN eq '3')}
+    {assign var=bagian value='14'}
+    {elseif ($result.FS_KD_GRUP_BAGIAN eq '2')}
+    {assign var=bagian value='17'}
+    {elseif ($result.FS_KD_GRUP_BAGIAN eq '1')}
+    {assign var=bagian value='20'}
+    {else}
+    {assign var=bagian value='0'}
+    {/if}
+    <!--masa kerja -->
+    {if ($result.MasaKerja >= '0') AND ($result.MasaKerja <= '2')}
+    {assign var=masakerja value='1.5'}
+    {elseif ($result.MasaKerja > '2') AND ($result.MasaKerja <= '7')}
+    {assign var=masakerja value='2'}
+    {elseif ($result.MasaKerja > '8') AND ($result.MasaKerja <= '13')}
+    {assign var=masakerja value='2.5'}
+    {elseif ($result.MasaKerja > '14') AND ($result.MasaKerja <= '19')}
+    {assign var=masakerja value='3'}
+    {elseif ($result.MasaKerja > '19') AND ($result.MasaKerja <= '24')}
+    {assign var=masakerja value='3.5'}
+    {elseif ($result.MasaKerja >= '25')}
+    {assign var=masakerja value='4'}
+    {else}
+    {assign var=masakerja value='0'}
+    {/if}
+    
+    {assign var=ipk value=$result.FN_JML_TERIMA-$result.FS_POTONGAN}
+    <!-- -->
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Slip IPK</th>
+        </tr>
+        <tr>
+            <td width='20%'>Pendidikan</td>
+            <td width='30%'>
+                <input type="text" name="FS_PENDIDIKAN" size="3" value="{$result.FS_PENDIDIKAN|default:'0'}" readonly=''/>
+            </td>
+            <td width='50%'>{$result.FS_NM_PENDIDIKAN}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td><input type="text" name="FS_JABATAN" size="3" value="{$result.FS_JABATAN|default:'0'}" readonly=''/></td>
+            <td>{$result.FS_NM_JABATAN}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Risiko Kerja</td>
+            <td><input type="text" name="FS_BAGIAN" size="3" value="{$result.FS_BAGIAN|default:'0'}" readonly=''/></td>
+            <td>{$result.FS_NM_BAGIAN} [{$result.FS_NM_GRUP_BAGIAN}]</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Masa Kerja</td>
+            <td><input type="text" name="FS_MASA_KERJA" size="3" value="{$result.FS_MASA_KERJA|default:'0'}" readonly=''/></td>
+            <td>{$result.MasaKerja} Tahun</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Tugas lain (Panitia, Tim, Komite)</td>
+            <td><input type="text" name="FS_TUGAS_LAIN" size="3" value="{$result.FS_TUGAS_LAIN|default:'0'}"/> </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Indek Kinerja Unit</td>
+            <td><input type="text" name="FS_IKU" size="3" value="{$result.FS_IKU|default:'0'}"/></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Indek Kinerja Individu</td>
+            <td><input type="text" name="FS_IKI" size="3" value="{$result.FS_IKI|default:'0'}"/></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Faktor Pengurang</td>
+            <td><input type="text" name="FS_PENGURANG" size="3" value="{$result.FS_PENGURANG|default:'0'}"/> %</td>
+            <td><input type="text" name="FS_PENGURANG_KET" size="25" placeholder="Ket Faktor Pengurang"/></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Gaji</td>
+            <td>{$result.FN_JML_TERIMA|number_format:0:",":"."}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Potongan</td>
+            <td><input type="text" name="FS_POTONGAN" size="10" value="{$result.FS_POTONGAN|default:'0'}"/></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Gaji di Terima</td>
+            <td>{$ipk|number_format:0:",":"."}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Periode {$result.PERIODE}</td>
+            <td>
+                <select name="periode">
+                    <option value="1" {if $result.PERIODE eq '1'}selected=''{/if}>Januari - Maret</option>
+                    <option value="2" {if $result.PERIODE eq '2'}selected=''{/if}>April - Juni</option>
+                    <option value="3" {if $result.PERIODE eq '3'}selected=''{/if}>Juli - September</option>
+                    <option value="4" {if $result.PERIODE eq '4'}selected=''{/if}>Oktober - Desember</option>
+                </select>
+                <select name="tahun">
+                    {foreach from=$rs_tahun item=tahun}
+                    <option value="{$tahun}" {if $result.TAHUN|default:'' eq $tahun}selected="selected"{/if}>{$tahun}</option>
+                    {/foreach}
+                </select>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Simpan" class="edit-button" /> 
+            </td>
+        </tr>
+    </table>
+</form>

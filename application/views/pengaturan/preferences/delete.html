@@ -1,0 +1,34 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/preferences')}">Preferences</a><span></span>
+        <small>Delete Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/preferences/process_delete')}" method="post">
+    <input name="pref_id" type="hidden" value="{$result.pref_id|default:''}">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Apakah anda yakin akan menghapus data dibawah ini?</th>
+        </tr>
+        <tr>
+            <td width="15%">Group</td>
+            <td width="85%">{$result.pref_group|default:''}</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>{$result.pref_nm|default:''}</td>
+        </tr>
+        <tr>
+            <td>Value</td>
+            <td>{$result.pref_value|default:''}</td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2"><input type="submit" name="save[delete]" value="Hapus" class="edit-button" /></td>
+        </tr>
+    </table>
+</form>

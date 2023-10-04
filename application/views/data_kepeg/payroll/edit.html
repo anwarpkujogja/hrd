@@ -1,0 +1,237 @@
+{include file="data_kepeg/payroll/add_script_js.html"}
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Kepegawaian</a><span></span>
+        <a href="#">Payroll</a><span></span>
+        <small>Edit</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('data_kepeg/payroll/edit_payroll_process')}" method="post">
+
+    <input name="FS_KD_PAYROLL" type="hidden" value="{$results.FS_KD_PAYROLL}" />
+    <input name="FS_KD_PEG" type="hidden" value="{$results.FS_KD_PEG}" />
+    <input name="FS_KD_BAGIAN" type="hidden" value="{$results.FS_KD_BAGIAN}" />
+    
+    <table class="table-info" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Slip Payroll</th>
+        </tr>
+        <tr>
+            <td width='15%'>Nama</td>
+            <td width='35%'>{$results.FS_NM_PEG}</td>
+            <td width='15%'>NIP</td>
+            <td width='35%'>{$results.FS_KD_PEG|default:''}</td>
+        </tr>
+        <tr>
+            <td>Bagian</td>
+            <td>{$result.FS_NM_BAGIAN}</td>
+            <td>Pangkat / Golongan</td>
+            <td>{$result.FS_KD_GOLONGAN}</td>
+        </tr>
+        <tr>
+            <td>Masa Kerja</td>
+            <td>{$result.MasaKerja} Tahun</td>
+            <td>No Bank</td>
+            <td>{$result.FS_REK_BANK}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Data Pendapatan</th>
+        </tr>
+        <tr>
+            <td>PERIODE</td>
+            <td><select name="FN_PERIODE">
+                <option value="">--select periode--</option>
+                {foreach from=$rs_bulan key=i item=bulan}
+                <option value="{$i}" {if $results.FN_PERIODE|default:'' eq $i}selected="selected"{/if}>{$bulan}</option>
+                {/foreach}
+            </select></td>
+          </tr>
+        <tr>
+            <td>GAJI POKOK	</td>
+            <td> <input name="FN_GAPOK" value="{$results.FN_GAPOK}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN SUAMI/ISTRI</td>
+            <td> <input name="FN_TUNJ_SUAMI" value="{$results.FN_TUNJ_SUAMI}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN ANAK</td>
+            <td> <input name="FN_TUNJ_ANAK" value="{$results.FN_TUNJ_ANAK}" type="text"/>
+                Jumlah Anak Ditanggung: {$result.JumlahAnak} </td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN DAPENMUH	</td>
+            <td> <input name="FN_TUNJ_DAPENMUH" value="{$results.FN_TUNJ_DAPENMUH}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN BERAS	</td>
+            <td> <input name="FN_TUNJ_BERAS" value="{$results.FN_TUNJ_BERAS}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN JABATAN</td>
+            <td> <input name="FN_TUNJ_JABATAN" value="{$results.FN_TUNJ_JABATAN}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN BPJS KESEHATAN</td>
+            <td> <input name="FN_TUNJ_BPJS" value="{$results.FN_TUNJ_BPJS}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN BPJS TK</td>
+            <td> <input name="FN_TUNJ_BPJS_TK" value="{$results.FN_TUNJ_BPJS_TK}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN FUNGFSIONAL</td>
+            <td> <input name="FN_TUNJ_FUNGSIONAL" value="{$results.FN_TUNJ_FUNGSIONAL}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN PROFESI</td>
+            <td> <input name="FN_TUNJ_PROFESI" value="{$results.FN_TUNJ_PROFESI}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN THD</td>
+            <td> <input name="FN_TUNJ_THD" value="{$results.FN_TUNJ_THD}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN THD MAN</td>
+            <td> <input name="FN_TUNJ_THD_MAN" value="{$results.FN_TUNJ_THD_MAN}" type="text"/></td>
+        </tr>
+        <tr>
+                <td>TUNJANGAN LEMBUR BIASA	</td>
+                <td> <input name="FN_TUNJ_LEMBUR" value="{$results.FN_TUNJ_LEMBUR}" type="text"/></td>
+            </tr>
+            <tr>
+                <td>TUNJANGAN LEMBUR LIBUR	</td>
+                <td> <input name="FN_TUNJ_LEMBUR_L" value="{$results.FN_TUNJ_LEMBUR_L}" type="text"/></td>
+            </tr>
+        <tr>
+            <td>TUNJANGAN PENDIDIKAN</td>
+            <td> <input name="FN_TUNJ_PENDIDIKAN" value="{$results.FN_TUNJ_PENDIDIKAN}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN MAKAN</td>
+            <td> <input name="FN_TUNJ_MAKAN" type="text"  value="{$result.FN_TUNJANGAN4}"/></td>
+        </tr>
+        <tr>
+            <td>TKP</td>
+            <td><input name="FN_TUNJ_TKP" type="text" value="{$result.FN_TUNJANGAN8}"/></td>  
+        </tr>
+        <tr>
+            <td>IPK</td>
+            <td><input name="FN_TUNJ_IPK" type="text" value="{$results.FN_TUNJ_IPK}"/></td>  
+        </tr>       
+        <tr>
+            <td>CUTI</td>
+            <td><input name="FN_TUNJ_CUTI" type="text" value="{$results.FN_TUNJ_CUTI}"/></td>  
+        </tr>   
+        <tr>
+            <td>RAPEL</td>
+            <td><input name="FN_TUNJ_RAPEL" value="{$results.FN_TUNJ_RAPEL}" type="text" />
+            Ket:
+            <input name="FN_KET_RAPEL" value="{$results.FN_KET_RAPEL}" type="text" /></td>  
+        </tr>   
+        <tr>
+            <td>PULSA</td>
+            <td><input name="FN_TUNJ_PULSA" type="text" value="{$results.FN_TUNJ_PULSA}"/></td>  
+        </tr>         
+        <tr>
+            <td>INSENTIF HR RAYA</td>
+            <td><input name="FN_TUNJ_IHR" type="text" value="{$results.FN_TUNJ_IHR}"/></td>  
+        </tr>
+        <tr>
+            <td>ONCALL</td>
+            <td><input name="FN_TUNJ_ONCALL" type="text" value="{$results.FN_TUNJ_ONCALL}"/></td>  
+        </tr>
+        <tr>
+            <td>PENDAPATAN LAIN</td>
+            <td><input name="FN_TUNJ_RAPELKE" type="text" value="{$results.FN_TUNJ_RAPELKE}"/></td>  
+        </tr>
+        <tr>
+            <td>OVERTIME</td>
+            <td><input name="FN_TUNJ_OVERTIME" type="text" value="{$results.FN_TUNJ_OVERTIME}"/></td>  
+        </tr>
+                    
+         <tr class="headrow">
+            <th colspan="4">Data Pengurangan</th>
+        </tr>
+       
+      
+        <tr>
+            <td>PPH 21</td>
+            <td> <input name="FN_PPH_21" value="{$results.FN_PPH_21}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BPJS KESEHATAN</td>
+            <td> <input name="FN_BPJS" value="{$results.FN_BPJS}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BPJS_TK / JAMSOSTEK	</td>
+            <td> <input name="FN_BPJS_TK" value="{$results.FN_BPJS_TK}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BPD KONVEN</td>
+            <td> <input name="FN_BRI" value="{$results.FN_BRI}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BPD SYARIAH</td>
+            <td> <input name="FN_BPD" value="{$results.FN_BPD}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BSM</td>
+            <td> <input name="FN_BSM" value="{$results.FN_BSM}" type="text"/>  
+              </td>  
+        </tr>
+        <tr>
+            <td>BAROKAH</td>
+            <td> <input name="FN_BAROKAH" value="{$results.FN_BAROKAH}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>FARMASI</td>
+            <td> <input name="FN_FARMASI" value="{$results.FN_FARMASI}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>AL-IKHLAS</td>
+            <td> <input name="FN_AL_IKHLAS" value="{$results.FN_AL_IKHLAS}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>PERUMAHAN</td>
+            <td> <input name="FN_PERUMAHAN" value="{$results.FN_PERUMAHAN}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>INFAQ PP</td>
+            <td> <input name="FN_INFAQ_PP" value="{$results.FN_INFAQ_PP}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>DAPENMUH</td>
+            <td> <input name="FN_DAPENMUH" value="{$results.FN_DAPENMUH}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>LAIN-LAIN</td>
+            <td> <input name="FN_LAIN_LAIN" value="{$results.FN_LAIN_LAIN}" type="text"/>  Ket:
+                <input name="FN_KET_POT" value="{$results.FN_KET_POT}" type="text" /></td>  
+        </tr>
+        <tr>
+            <td>PTKP</td>
+            <td> <input name="FN_PTKP" value="{$results.FN_PTKP}" type="text"/></td>
+        </tr>
+   
+        
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Simpan" class="edit-button" /> 
+            </td>
+        </tr>
+    </table>
+</form>

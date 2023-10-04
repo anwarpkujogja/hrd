@@ -1,0 +1,115 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showOn: "both",
+            buttonImage: "{$BASEURL}/resource/doc/images/icon/calendar.gif",
+            buttonImageOnly: true,
+            dateFormat: 'dd-mm-yy'
+        });
+        // select2
+        $(".select2").select2({
+            placeholder: "Pilih",
+            allowClear: true
+        });
+        // chain select
+        // tujuan
+        var user = $("#user").val();
+        $('#tujuan').select2('data', null);
+        $('#tujuan').select2('data', null);
+        $("#tujuan").removeAttr("disabled");
+        jQuery("#tujuan").html('');
+        $.ajax({
+            type: "POST",
+            url: "{$config->site_url('pengaturan/struktural/list_pegawai/')}",
+            data: "user=" + user,
+            dataType: 'json',
+            success: function(data) {
+                var showData;
+                jQuery.each(data, function(index, result) {
+                    if (result.value == 0) {
+                    } else {
+                        showData += "<option value='" + result.value + "'>" + result.label + "</option>";
+                    }
+                })
+                jQuery("#tujuan").html(showData);
+            }
+        });
+        //tags
+        $("#tujuan").select2({});
+    });
+</script>
+{if isset($result)}
+{foreach from=$result key=key item=i}
+{if $key eq 'tujuan_loop[]'}
+{assign var=tujuan_loop value=$i}
+{$tujuan_var=""}
+{foreach from=$tujuan_loop key=key item=i}
+{$tujuan_var=$tujuan_var|cat:"'"|cat:$i|cat:"',"}
+{/foreach}
+{assign var=tujuan_loop value=$tujuan_var}
+<script type="text/javascript">
+    $(document).ready(function() {
+        // chain select
+        var user = $("#user").val();
+        $('#tujuan').select2('data', null);
+//        if (operator == '') {
+//            $("#tipe_pesawat").attr("disabled", "disabled");
+//        } else {
+    $("#tujuan").removeAttr("disabled");
+    jQuery("#tujuan").html('');
+    $.ajax({
+        type: "POST",
+        url: "{$config->site_url('pengaturan/struktural/list_pegawai/')}",
+        data: "user=" + user,
+        dataType: 'json',
+        success: function(data) {
+            var showData;
+            jQuery.each(data, function(index, result) {
+                if (result.value == 0) {
+                } else {
+                    showData += "<option value='" + result.value + "'>" + result.label + "</option>";
+                }
+            })
+            jQuery("#tujuan").html(showData);
+            $('#tujuan').select2('val', [{$tujuan_loop}]);
+
+        }
+    });
+//        }
+$("#user").change(function() {
+    user = $(this).val();
+    $('#tujuan').select2('data', null);
+//            if (user == '') {
+//                $("#tipe_pesawat").attr("disabled", "disabled");
+//            } else {
+    $("#tujuan").removeAttr("disabled");
+    jQuery("#tujuan").html('');
+    $.ajax({
+        type: "POST",
+        url: "{$config->site_url('pengaturan/struktural/list_pegawai/')}",
+        data: "user=" + user,
+        dataType: 'json',
+        success: function(data) {
+            var showData;
+            jQuery.each(data, function(index, result) {
+                if (result.value == 0) {
+                } else {
+                    showData += "<option value='" + result.value + "'>" + result.label + "</option>";
+                }
+            })
+            jQuery("#tujuan").html(showData);
+        }
+    });
+//            }
+});
+        //tags
+        $("#tujuan").select2({});
+    });
+</script>
+{/if}
+{/foreach}
+
+{/if}

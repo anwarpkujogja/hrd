@@ -1,0 +1,66 @@
+<div class="head-content">
+    <h3>Users</h3>
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="#" class="active">Hapus Data</a></li>
+            <li><a href="{$config->site_url('settings/adminuser/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+            <li><a href="{$config->site_url('settings/adminuser')}">List Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('settings/adminuser/delete_process')}" method="post">
+    <input type="hidden" name="user_id" value="{$result.user_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Apakah anda yakin akan menghapus data di bawah ini?</th>
+        </tr>
+        <tr>
+            <th colspan="2">User Info</th>
+        </tr>
+        <tr>
+            <td width="25%">Nama Lengkap *</td>
+            <td width="75%">{$result.FS_NM_PEG|default:''}</td>
+        </tr>
+        <tr>
+            <td>Alamat *</td>
+            <td>{$result.FS_ALM_PEG|default:''}</td>
+        </tr>
+        <tr>
+            <td>Email *</td>
+            <td>{$result.FS_EMAIL|default:''}</td>
+        </tr>
+        <tr>
+            <td>Nomor Telepon *</td>
+            <td>{$result.FS_HP_PEG|default:''}</td>
+        </tr>
+        <tr>
+            <th colspan="2">User Account</th>
+        </tr>
+        <tr>
+            <td>User Name *</td>
+            <td>{$result.user_name|default:''}</td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td>{$result.user_pass|default:''}</td>
+        </tr>
+        <tr>
+            <td>Lock Status *</td>
+            <td>
+                {if {$result.lock_st|default:''} == "0"}Active{/if}
+                {if {$result.lock_st|default:''} == "1"}Blocked{/if}
+            </td>
+        </tr>
+        <tr>
+            <td>Hak Akses *</td>
+            <td>{$result.role_nm|default:''}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" name="save" value="Hapus" class="edit-button" /> </td>
+        </tr>
+    </table>
+</form>

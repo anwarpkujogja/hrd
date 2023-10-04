@@ -1,0 +1,39 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Manajemen Arsip</a><span></span>
+        <a href="{$config->site_url('surat/event')}">Event</a><span></span>
+        <small>Delete Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('surat/event/delete_process')}" method="post" onsubmit="return confirm('Apakah anda yakin akan menghapus data dibawah ini?')">
+    <input name="event_id" type="hidden" value="{$result.event_id|default:''}"/>
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Delete Kegiatan</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama Kegiatan</td>
+            <td width="85%">{$result.event_name|default:''}</td>
+        </tr>
+        <tr>
+            <td>Pelaksanaan</td>
+            <td>{$result.event_datestart|date_format:"%d-%b-%Y"|default:''} s/d {$result.event_dateend|date_format:"%d-%b-%Y"|default:''}</td>
+        </tr>
+        <tr>
+            <td>Tempat</td>
+            <td>{$result.event_place|capitalize|default:''}</td>
+        </tr>
+        <tr>
+            <td>Deskripsi Event</td>
+            <td>{$result.event_desc|capitalize|default:''}</td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Hapus" class="edit-button" />
+            </td>
+        </tr>    
+    </table>
+</form>

@@ -1,0 +1,111 @@
+{include file="data_kepeg/potongan/add_script_js.html"}
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Kepegawaian</a><span></span>
+        <a href="#">Payroll</a><span></span>
+        <small>Input Potongan</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('data_kepeg/potongan/edit_payroll_process')}" method="post">
+    <input name="FS_KD_PAYROLL" type="hidden" value="{$results.FS_KD_PAYROLL}" />
+    <input name="FS_KD_PEG" type="hidden" value="{$results.FS_KD_PEG}" />  
+    <table class="table-info" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Slip Payroll</th>
+        </tr>
+        <tr>
+            <td width='15%'>Nama</td>
+            <td width='35%'>{$results.FS_NM_PEG}</td>
+            <td width='15%'>NIP</td>
+            <td width='35%'>{$results.FS_KD_PEG|default:''}</td>
+        </tr>
+        <tr>
+            <td>Bagian</td>
+            <td>{$result.FS_NM_BAGIAN}</td>
+            <td>Pangkat / Golongan</td>
+            <td>{$result.FS_KD_GOLONGAN}</td>
+        </tr>
+        <tr>
+            <td>Masa Kerja</td>
+            <td>{$results.MaKer} Tahun</td>
+            <td>No Bank</td>
+            <td>{$result.FS_REK_BANK}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <table class="table-input" width="100%">
+                     
+         <tr class="headrow">
+            <th colspan="4">Data Pengurangan</th>
+        </tr>      
+        <tr>
+            <td>PPH 21</td>
+            <td> <input name="FN_PPH_21" value="{$results.FN_PPH_21}" type="number"/></td>
+        </tr>
+        <tr>
+            <td>BPJS KESEHATAN</td>
+            <td> <input name="FN_BPJS" value="{$results.FN_BPJS}" type="number" readonly/></td>
+        </tr>
+        <tr>
+            <td>BPJS_TK / JAMSOSTEK	</td>
+            <td> <input name="FN_BPJS_TK" value="{$results.FN_BPJS_TK}" type="number" readonly/></td>
+        </tr>
+        <tr>
+            <td>BPD KONVENSIONAL</td>
+            <td> <input name="FN_BRI" value="{$results.FN_BRI}" type="number"/></td>
+        </tr>
+        <tr>
+            <td>BPD SYARIAH</td>
+            <td> <input name="FN_BPD" value="{$results.FN_BPD}" type="number"/></td>
+        </tr>
+        <tr>
+            <td>BSM</td>
+            <td> <input name="FN_BSM" value="{$results.FN_BSM}" type="number"/></td>
+        </tr>
+        <tr>
+            <td>BAROKAH</td>
+            <td> <input name="FN_BAROKAH" value="{$results.FN_BAROKAH}" type="number"/></td>
+        </tr>
+        <tr>
+            <td>FARMASI</td>
+            <td> <input name="FN_FARMASI" value="{$results.FN_FARMASI}" type="number"/></td>
+        </tr>
+        <tr>
+            <td>AL-IKHLAS</td>
+            <td> <input name="FN_AL_IKHLAS" value="{$results.FN_AL_IKHLAS}" type="number"/></td>
+        </tr>
+        <tr>
+            <td>PERUMAHAN</td>
+            <td> <input name="FN_PERUMAHAN" value="{$results.FN_PERUMAHAN}" type="number"/></td>
+        </tr>
+        <tr>
+            <td>INFAQ PP</td>
+            <td> <input name="FN_INFAQ_PP" value="{$results.FN_INFAQ_PP}" type="number" readonly/></td>
+        </tr>
+        <tr>
+            <td>DAPENMUH</td>
+            <td> <input name="FN_DAPENMUH" value="{$results.FN_DAPENMUH}" type="number" readonly/></td>
+        </tr>
+        <tr>
+            <td>LAIN-LAIN</td>
+            <td> <input name="FN_LAIN_LAIN" value="{$results.FN_LAIN_LAIN}" type="number"/>  Ket:
+                 <input name="FN_KET_POT" value="{$results.FN_KET_POT}" type="text" /></td>  
+        </tr>
+        
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Simpan" class="edit-button" /> 
+            </td>
+        </tr>
+    </table>
+</form>

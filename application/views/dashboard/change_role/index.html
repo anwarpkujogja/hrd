@@ -1,0 +1,42 @@
+<div class="breadcrum">
+    <p><a href="#">Account Settings</a><span></span><small>Change Role</small></p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('dashboard/account_setting/change_role_process')}" method="post" enctype="multipart/form-data">
+    <input name="username" type="hidden" value="{$result2.user_name|default:''}" />
+    <input name="pass" type="hidden" value="{$result2.user_pass|default:''}" />
+    <input name="user_id" type="hidden" value="{$result.user_id|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Change Role</th>
+        </tr>
+        <tr>
+            <td width="15%">Role Aktif</td>
+            <td width="85%">
+                <input name="role_nm" type="text" value="{$result.role_nm|default:''}" size="35" maxlength="50" disabled="disabled"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Ubah Ke</td>
+            <td>
+                <select name="role_id">
+                    <option></option>
+                    {foreach from=$rs_role item=data}
+                    <option value="{$data.role_id}" {if {$result.role_id|default:''} eq {$data.role_id|default:''}}selected="selected"{/if}>{$data.role_nm}</option>
+                    {/foreach}
+                </select>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+
+        <tr class="submit-box">
+            <td colspan="5">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

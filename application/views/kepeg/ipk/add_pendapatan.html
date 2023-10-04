@@ -1,0 +1,48 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Kepegawaian</a><span></span>
+        <small>IPK</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('data_kepeg/ipk/add_pendapatan_process')}" method="post">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Pendapatan</th>
+        </tr>
+         <tr>
+            <td width='20%'>Periode</td>
+            <td width='30%'>
+                <select name="periode">
+                    <option value="1">Januari - Maret</option>
+                    <option value="2">April - Juni</option>
+                    <option value="3">Juli - September</option>
+                    <option value="4">Oktober - Desember</option>
+                </select>
+                <select name="tahun">
+                    {foreach from=$rs_tahun item=tahun}
+                    <option value="{$tahun}" {if $search.tahun|default:'' eq $tahun}selected="selected"{/if}>{$tahun}</option>
+                    {/foreach}
+                </select>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Jumlah Pendapatan</td>
+            <td>
+                <input type="text" name="FN_JML_PENDAPATAN" size="36" value="0"/>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Simpan" class="edit-button" /> 
+            </td>
+        </tr>
+    </table>
+</form>

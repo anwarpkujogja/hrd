@@ -1,0 +1,66 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            yearRange: '-90:+0',
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p><a href="#">Data Umum</a><span></span><small>Data Keluarga</small></p>
+    <div class="clear"></div>
+</div>
+<div class="head-content">
+    <div class="head-content-nav">
+        <ul>
+            <li><a href="{$config->site_url('umum/data_pribadi/')}" > Data Pribadi</a></li>
+            <li><a href="{$config->site_url('umum/data_keluarga/')}" class="active">Data Keluarga</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="7%">NIK</th>
+        <th width="20%">Nama</th>
+        <th width="7%">Hubungan</th>
+        <th width="7%">Ke</th>
+        <th width="11%"></th>
+    </tr>
+    {foreach from=$rs_kel item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.FS_KD_PEG}</td>
+        <td>{$result.FS_NM_PEG}</td>
+        <td align="center">
+            {if $result.FS_KD_HUB_KEL eq '003'}
+            Anak
+            {elseif $result.FS_KD_HUB_KEL eq '001'}
+            Suami
+            {elseif $result.FS_KD_HUB_KEL eq '002'}
+            Istri
+            {/if}
+        </td>
+        <td align="center">{$result.FN_ANAK_KE}</td>
+        <td align="center">
+            <!--<a href="{$config->site_url('umum/data_keluarga/add/'|cat:$result.FS_KD_PEG|default:'')}" class="button-edit">Tambah</a>-->
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="4">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>
+           

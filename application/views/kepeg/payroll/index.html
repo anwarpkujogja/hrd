@@ -1,0 +1,59 @@
+{include file="diklat/lap_diklat_unit/add_script_js.html"}
+<div class="breadcrum">
+    <p>
+        <a href="#">Kepegawaian</a><span></span>
+        <small>Penilaian Struktural</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+<div class="notification red">
+    <p><strong>Warning :</strong> Penilaian hanya dapat dilakukan 1 kali [Tidak dapat di edit], mohon isikan dengan lengkap, benar dan objektif </p>
+    <div class="clear"></div>
+</div>
+<table width="100%" class="table-view">
+    <tr>
+        <th width="4%">No</th>
+        <th>Periode</th>
+        <th>NIK Dinilai</th>
+        <th>Nama Dinilai</th>
+        <th>NIK Penilai</th>
+        <th>Nama Penilai</th>
+        <th width="15%"></th>
+    </tr>
+    {foreach from=$rs_result item=result}
+    <!-- 
+        {assign var=cek_penilaian value=$m_kepeg_struktural->cek_penilaian_by_id(array($result.FS_KD_TRS))}
+    -->
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>          
+        <td align="center">{$result.fs_tahun|default:''}</td>
+        <td align="center">{$result.NIK_DINILAI|default:''}</td>
+        <td>{$result.NAMA_DINILAI|default:''}</td>
+        <td align="center">{$result.NIK_PENILAI|default:''}</td>
+        <td>{$result.NAMA_PENILAI|default:''}</td>
+        <td align="center">
+
+            {if $com_user.role_id eq '5'}
+
+            {if $result.FS_STATUS eq '1'}
+            <img src="{$BASEURL}resource/doc/images/icon/icon.ok.png" alt="" style="vertical-align: middle;" title="Done"/> Selesai
+            {else}
+            <a href="{$config->site_url('kepeg/struktural/add_dispo/'|cat:$result.NIK_DINILAI|default:'')}"" class="button-edit">Dispo Nilai</a>
+            {/if}
+            {else}
+            {/if}
+            
+
+            {if $cek_penilaian eq '0'}
+            <a href="{$config->site_url('kepeg/struktural/add/'|cat:$result.FS_KD_TRS|default:'')}"" class="button-edit">Nilai</a>
+            {else}
+            {/if}
+            
+        </td>
+    </tr>
+    {/foreach}
+</table>

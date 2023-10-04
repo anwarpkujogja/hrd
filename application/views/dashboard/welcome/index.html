@@ -1,0 +1,152 @@
+<div class="dashboard-home">
+    <div class="dashboard-home-content">
+        <div class="left">
+            <h3>Surat Tanda Registrasi</h3>
+            <div class="dashboard-home-box">
+                <div class="scroll">
+                    <table width="97%">
+                        <tr class="head-dashboard">
+                            <td>NO</td>
+                            <td>NAMA</td>
+                            <td>TANGGAL BERAKHIR</td>
+                        </tr>
+                        {foreach $rs_str as $str}
+                        <tr>
+                            <td><center>{$no++}</center></td>
+                        <td>
+                            {$str.FS_NM_PEG}
+                        </td>
+                        <td>
+                        <center>{$str.FD_TGL_EXP_REGISTER|date_format:"%d-%m-%Y"}</center>
+                        </td>
+                        </tr>
+                        {/foreach}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="dashboard-home-box">
+                <h3>Surat Ijin Praktek</h3>
+                <div class="scroll">
+                    <table width="97%">
+                        <tr class="head-dashboard">
+                            <td>NO</td>
+                            <td>NAMA</td>
+                            <td>TANGGAL BERAKHIR</td>
+                        </tr>
+                        {foreach $rs_sip as $sip}
+                        <tr>
+                            <td><center>{$no2++}</center></td>
+                        <td>
+                            {$sip.FS_NM_PEG}
+                        </td>
+                        <td>
+                        <center>{$sip.FD_TGL_AKHIR_IJIN_PRAKTEK|date_format:"%d-%m-%Y"}</center>
+                        </td>
+                        </tr>
+                        {/foreach}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-home-content">
+        <div class="left">
+            <h3>Surat Ijin Kerja</h3>
+            <div class="dashboard-home-box">
+                <div class="scroll">
+                    <table width="97%">
+                        <tr class="head-dashboard">
+                            <td>NO</td>
+                            <td>NAMA</td>
+                            <td>TANGGAL BERAKHIR</td>
+                        </tr>
+                        {foreach $rs_sik as $sik}
+                        <tr>
+                            <td><center>{$no3++}</center></td>
+                        <td>
+                            {$sik.FS_NM_PEG}
+                        </td>
+                        <td>
+                        <center>{$sik.FD_TGL_AKHIR_IJIN_KERJA|date_format:"%d-%m-%Y"}</center>
+                        </td>
+                        </tr>
+                        {/foreach}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="dashboard-home-box">
+                <h3>Jumlah Pegawai per Jenis Pegawai</h3>
+                <div class="chart">
+                <canvas id="jenispeg" style="height: 230px; width: 548px;" width="1096" height="460"></canvas>
+            </div>
+            <div class="scroll">
+                <table width="97%">
+                    <tr class="head-dashboard">
+                        
+                        <td>Jenis Pegawai</td>
+                        <td>Jumlah Pegawai</td>
+                    </tr>
+                    <tr>
+                        <td><b>Total Pegawai</b></td>
+                        <th>{$rs_total_peg.TOTAL}</th>
+                    </tr>
+                    {foreach $rs_jenispeg as $jenispeg}
+                    <td>
+                        {$jenispeg.FS_NM_JENIS_PEG}
+                    </td>
+                    <td>
+                    <center>{$jenispeg.TOTAL}</center>
+                    </td>
+                    </tr>
+                    {/foreach}
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $.getJSON('{$config->site_url("dashboard/welcome/list_jenispeg")}', function (data) {
+        //buat array untuk label nama kota/kab
+        var labels = [];
+        //buat array untuk data Jml Perempuan
+        var dataTotal = [];
+
+        $(data).each(function (i) {
+            labels.push(data[i].FS_NM_JENIS_PEG);
+            dataTotal.push(data[i].TOTAL);
+        });
+
+
+        var ctx = document.getElementById("jenispeg").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Total',
+                        data: dataTotal,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    });
+</script>

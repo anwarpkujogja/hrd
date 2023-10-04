@@ -1,0 +1,49 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Permissions</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$pagination.total|default:0}</strong> Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th width="21%">Nama</th>
+        <th width="16%">NIP</th>
+        <th width="25%">Unit Kerja</th>
+        <th width="15%">Jabatan</th>
+        <th width="15%">Email</th>
+        <th width="4%"></th>
+    </tr>
+    {foreach from=$rs_permissions item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.nama_lengkap|default:''}</td>
+        <td>{$result.nip|default:''}</td>
+        <td>{$result.unit_nm|default:''}</td>
+        <td>{$result.jabatan|default:''}</td>
+        <td>{$result.user_mail|default:''}</em></td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/permissions/edit/'|cat:$result.user_id|default:'')}" class="button-edit">Edit</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="7">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

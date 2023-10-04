@@ -1,0 +1,85 @@
+{include file="data_kepeg/payroll/add_script_js.html"}
+<div class="breadcrum">
+    <p>
+        <a href="#">Kepegawaian</a><span></span>
+        <small>Payroll</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('laporan/laporangaji/proses_cari_total')}" method="post">
+        <table class="table-search" width="100%">
+            <tr>
+                
+                <th width="5%">Bulan</th>
+                <th width="8%">
+                    <select name="bulan">
+                        {foreach from=$rs_bulan key=i item=bulan}
+                        <option value="{$i}" {if $search.bulan|default:'' eq $i}selected="selected"{/if}>{$bulan}</option>
+                        {/foreach}
+                    </select>
+                </th>
+                <th width="5%">Tahun</th>
+                <th width="8%">
+                    <select name="tahun">
+                        {foreach from=$rs_tahun item=tahun}
+                        <option value="{$tahun}" {if $search.tahun|default:'' eq $tahun}selected="selected"{/if}>{$tahun}</option>
+                        {/foreach}
+                    </select>
+                </th>
+                <th style="text-align: left;">
+
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </th>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+        <div class="pageRow">
+            <div class="pageNav">
+                <ul>
+                    <li class="info"></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="navigation-button">
+            <ul>
+                   
+                <li><a href="{$config->site_url('laporan/laporangaji/report_excel_total')}"><img src="{$BASEURL}resource/doc/images/icon/icon.excel.png" alt="" /> Export Excel </a></li>
+              
+            </ul>
+        </div>
+        <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table width="100%" class="table-view">
+    <tr>
+        <th>No</th>
+        <th>NIK</th>
+        <th>Nama</th>
+        <th>UNIT</th>
+        <th>Gaji</th>
+        <th width='17%'></th>
+    </tr>
+    {foreach from=$rs_peg item=result}
+    <tr>
+         {if $result.TOTAL != 0}
+            <td>{$no++}</td>
+            <td>{$result.FS_KD_PEG}</td>
+            <td>{$result.FS_NM_PEG}</td>
+            <td>{$result.FS_NM_BAGIAN}</td>
+            <td><center>{$result.TOTAL|number_format:0:",":"."}</center></td>
+            <td><center>
+                <a href="{$config->site_url('data_kepeg/payroll/slip/'|cat:$result.FS_KD_PAYROLL|default:''|cat:'/'|cat:$result.FS_KD_PEG)}" target="_blank" style="text-align:center" class="button-download text-center">Print</a>
+            </center>
+            </td>
+        {/if}
+    </tr>
+    {/foreach}
+</table>

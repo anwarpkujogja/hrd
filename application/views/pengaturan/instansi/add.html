@@ -1,0 +1,70 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/instansi')}">Data Instansi</a><span></span>
+        <small>Add Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/instansi')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />  Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/instansi/add_process')}" method="post"">
+    <table class="table-input" width="100%">
+        <tr>
+            <th colspan="4">Add Data</th>
+        </tr>
+        <tr>
+            <td width="10%">Nama Instansi</td>
+            <td width="40%">
+                <input name="instansi_name" type="text" value="{$result.instansi_name|default:''}" size="50" maxlength="150" />
+                <em>* wajib diisi</em>
+            </td>
+            <td width="10%">No Telepon</td>
+            <td width="40%">
+                <input name="instansi_telp" type="text" value="{$result.instansi_telp|default:''}" size="15" maxlength="25" />
+                
+            </td>
+        </tr>
+        <tr>
+            <td>Kode Instansi</td>
+            <td>
+                <select name="instansi_kode">
+                    <option value="">Pilih</option>
+                    <option value="PS">PS--Kementerian Perhubungan</option>
+                    <option value="GA">GA--Ground Handling/Airlines</option>
+                    <option value="PB">PB--Bandara Otoritas</option>
+                    <option value="KK">KK--Permohonan Pass</option>
+                    <option value="UM.1">UM.1--Instansi Pemerintah</option>
+                    <option value="UM.2">UM.2--Instansi Swasta</option>
+                </select> 
+                <em>* wajib diisi</em>
+            </td>
+            <td>No Fax</td>
+            <td>
+                <input name="instansi_fax" type="text" value="{$result.instansi_fax|default:''}" size="15" maxlength="25" />
+            </td>
+        </tr>
+        <tr>
+            <td>Alamat</td>
+            <td>
+                <textarea name="instansi_alamat" cols="50">{$result.instansi_alamat|default:''}</textarea>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

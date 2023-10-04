@@ -1,0 +1,148 @@
+{include file="data_kepeg/payroll/add_script_js.html"}
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Kepegawaian</a><span></span>
+        <a href="#">Payroll</a><span></span>
+        <small>Add</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('data_kepeg/payroll/add_payroll_process')}" method="post">
+    <input name="FS_KD_PEG" type="hidden" value="{$result.FS_KD_PEG}" />
+    <table class="table-info" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Data Pegawai</th>
+        </tr>
+        <tr>
+            <td width='15%'>NIP</td>
+            <td width='35%'>{$result.FS_KD_PEG|default:''}</td>
+        </tr>
+        <tr>
+            <td width='15%'>Nama</td>
+            <td width='35%'>{$result.FS_NM_PEG}</td>
+        </tr>
+    </table>
+
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Data Pendapatan</th>
+        </tr>
+        <tr>
+            <td>GAJI POKOK	</td>
+            <td> <input name="FN_GAPOK" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN SUAMI</td>
+            <td> <input name="FN_TUNJ_SUAMI" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN ANAK</td>
+            <td> <input name="FN_TUNJ_ANAK" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN BERAS	</td>
+            <td> <input name="FN_TUNJ_BERAS" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN JABATAN</td>
+            <td> <input name="FN_TUNJ_JABATAN" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN BPJS</td>
+            <td> <input name="FN_TUNJ_BPJS" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN BPJS TK</td>
+            <td> <input name="FN_TUNJ_BPJS_TK" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN FUNGFSIONAL</td>
+            <td> <input name="FN_TUNJ_FUNGSIONAL" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN PROFESI</td>
+            <td> <input name="FN_TUNJ_PROFESI" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN THD</td>
+            <td> <input name="FN_TUNJ_THD" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN LEMBUR	</td>
+            <td> <input name="FN_OVER_TIME" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN PENDIDIKAN</td>
+            <td> <input name="FN_PENDIDIKAN" type="text"/></td>
+        </tr>
+        <tr>
+            <td>TUNJANGAN MAKAN</td>
+            <td> <input name="FN_MAKAN" type="text"/></td>
+        </tr>
+        
+         <tr class="headrow">
+            <th colspan="4">Data Pengurangan</th>
+        </tr>
+        <tr>
+            <td>JAMSOSTEK</td>
+            <td> <input name="FN_JAMSOSTEK" type="text"/></td>
+        </tr>
+        <tr>
+            <td>DANA PENSIUN</td>
+            <td> <input name="FN_DANA_PENSIUN" type="text"/></td>
+        </tr>
+        <tr>
+            <td>PPH 21</td>
+            <td> <input name="FN_PPH_21" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BPJS</td>
+            <td> <input name="FN_BPJS" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BPJS_TK</td>
+            <td> <input name="FN_BPJS_TK" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BRI</td>
+            <td> <input name="FN_BRI" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BPD</td>
+            <td> <input name="FN_BPD" type="text"/></td>
+        </tr>
+        <tr>
+            <td>BAROKAH</td>
+            <td> <input name="FN_BAROKAH" type="text"/></td>
+        </tr>
+        <tr>
+            <td>FARMASI</td>
+            <td> <input name="FN_FARMASI" type="text"/></td>
+        </tr>
+        <tr>
+            <td>AL-IKHLAS</td>
+            <td> <input name="FN_AL_IKHLAS" type="text"/></td>
+        </tr>
+        <tr>
+            <td>PERUMAHAN</td>
+            <td> <input name="FN_PERUMAHAN" type="text"/></td>
+        </tr>
+        <tr>
+            <td>INFAQ PP</td>
+            <td> <input name="FN_INFAQ_PP" type="text"/></td>
+        </tr>
+        <tr>
+            <td>LAIN-LAIN</td>
+            <td> <input name="FN_LAIN_LAIN" type="text"/></td>
+        </tr>
+        
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Simpan" class="edit-button" /> 
+            </td>
+        </tr>
+    </table>
+</form>

@@ -1,0 +1,70 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/klasifikasi')}">Klasifikasi Arsip</a><span></span>
+        <small>Add Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/klasifikasi')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />  Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/klasifikasi/add_process')}" method="post">
+    <input type="hidden" name="klasifikasi_cd_old" value="{$result.klasifikasi_cd|default:''}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Add Klasifikasi Arsip</th>
+        </tr>
+        <tr>
+            <td width='20%'>Kategori</td>
+            <td width='80%'>
+                <select name="klas_id">
+                    <option value="">Pilih</option>
+                    {foreach from=$rs_kategori item=data}
+                    <option value="{$data.klas_id}" {if $result.klas_id eq $data.klas_id}selected="selected"{/if}>{$data.klas_name|upper}</option>
+                    {/foreach}
+                </select> 
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Induk Klasifikasi</td>
+            <td>
+                <select name="klasifikasi_parent">
+                    <option value="">Pilih Induk</option>
+                    {foreach from=$rs_klasifikasi item=data}
+                    <option value="{$data.klasifikasi_cd}" {if $result.klasifikasi_parent eq $data.klasifikasi_cd}selected="selected"{/if}>{$data.klasifikasi_cd|upper} - {$data.klasifikasi_name|lower|capitalize}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Kode Klasifikasi</td>
+            <td>
+                <input type="text" name="klasifikasi_cd" value="{$result.klasifikasi_cd|default:''}" size="10" maxlength="5" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Nama Klasifikasi</td>
+            <td>
+                <input type="text" name="klasifikasi_name" value="{$result.klasifikasi_name|default:''}" size="40" maxlength="50" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="edit-button" />
+                <input type="reset" name="save" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

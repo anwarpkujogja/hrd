@@ -1,0 +1,26 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/kat_dokumen')}">Kategori Dokumen</a><span></span>
+        <small>Delete Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/kat_dokumen/process_delete')}" method="post">
+    <input name="kategori_id" type="hidden" value="{$result.kategori_id|default:''}">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Apakah anda yakin akan menghapus data dibawah ini?</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama</td>
+            <td width="85%">{$result.kategori_nm|default:''}</td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2"><input type="submit" name="save[delete]" value="Hapus" class="edit-button" /></td>
+        </tr>
+    </table>
+</form>

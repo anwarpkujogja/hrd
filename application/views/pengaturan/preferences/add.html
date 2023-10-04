@@ -1,0 +1,45 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/preferences')}">Preferences</a><span></span>
+        <small>Add Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/preferences/process_add')}" method="post">
+    <table class="table-input" width="100%">
+        <tr>
+            <th colspan="2">Add Data</th>
+        </tr>
+        <tr>
+            <td width="15%">Group</td>
+            <td width="85%">
+                <input name="pref_group" type="text" size="40" maxlength="30" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>
+                <input name="pref_nm" type="text" size="40" maxlength="100" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Value</td>
+            <td>
+                <input name="pref_value" type="text" size="40" maxlength="100" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

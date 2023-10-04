@@ -1,0 +1,65 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/permissions')}">Permissions</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/permissions/edit_process')}" method="post">
+    <input name="user_id" type="hidden" value="{$result.user_id|default:''}">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Data Personel</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama Lengkap</td>
+            <td width="85%"><b>{$result.nama_lengkap|default:''}</b></td>
+        </tr>
+        <tr>
+            <td>Alamat</td>
+            <td><b>{$result.alamat|default:''}</b></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><b>{$result.user_mail|default:''}</b></td>
+        </tr>
+        <tr>
+            <td>Telepon</td>
+            <td><b>{$result.no_telp|default:''}</b></td>
+        </tr>
+        <tr class="headrow">
+            <th colspan="2">Permissions</th>
+        </tr>
+        <tr>
+            <td>Select Role</td>
+            <td>
+                <select name="role_id">
+                    <option value="">Pilih</option>
+                    {foreach from=$role_list item=value}
+                    <option value="{$value.role_id}" 
+                            {if $value.role_id|default:'' eq $result.role_id}selected="selected"{/if}>{$value.role_nm|default:''}</option>
+                    {/foreach}
+                </select>
+<!--                
+                {foreach from=$role_list|default:'' item=rlist}
+                {assign var=selected value=$m_permissions->check_is_selected(array($rlist.role_id, $result.user_id))}
+                {if $selected == 0}
+                <input type="checkbox" name="role_id[]" value="{$rlist.role_id|default:''}"/>&nbsp;{$rlist.role_nm|default:''}<br/><br/>
+                {else if $selected >= 1}
+                <input type="checkbox" name="role_id[]" value="{$rlist.role_id|default:''}" checked="checked"/>&nbsp;{$rlist.role_nm|default:''}<br/><br/>
+                {/if}
+                {/foreach}-->
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

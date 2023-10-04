@@ -1,0 +1,121 @@
+<div class="breadcrum">
+  <p>
+      <a href="#">Kepegawaian</a><span></span>
+      <small>Setup Gaji</small>
+  </p>
+  <div class="clear"></div>
+</div>
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('data_kepeg/gaji_berkala/update_gajiberkala_process')}" method="post">
+  <input name="FS_KD_PEG" type="hidden" value="{$result.FS_KD_PEG}" />
+  <input name="FS_KD_TRS_KENAIKAN" type="hidden" value="{$result.FS_KD_TRS_KENAIKAN}" />
+  <table class="table-input" width="100%">
+      <tr class="headrow">
+          <th colspan="4">Data Baru Pegawai</th>
+      </tr>
+      <tr> 
+          <td>PANGKAT</td>
+          <td>
+             <select name="FS_KD_PANGKAT" id="FS_KD_PANGKAT" class="select2" style="width: 250px;">
+                <option value="">--Pilih Data--</option>
+                     {foreach from=$rs_pangkat item=data}
+                        <option value="{$data.fs_kd_pangkat}" {if $result.FS_KD_PANGKAT|default:'' eq $data.fs_kd_pangkat}selected="selected"{/if} >{$data.fs_nm_pangkat}</option>
+                    {/foreach}
+             </select>
+          </td>
+
+          <td>GOLONGAN</td>
+          <td>
+              <select name="FS_KD_GOLONGAN" id="FS_KD_GOLONGAN" class="select2" style="width: 250px;">
+                  <option value="">--Pilih Data--</option>
+                    {foreach from=$rs_golongan item=data}
+                        <option value="{$data.fs_kd_golongan}" {if $result.FS_KD_GOLONGAN eq $data.fs_kd_golongan}selected="selected"{/if} >{$data.fs_kd_golongan}-{$data.fs_nm_golongan}</option>
+                    {/foreach}
+              </select>
+        </td>
+     </tr> 
+     <tr>
+        <td>STATUS</td>
+        <td>
+            <select name="FS_KD_STATUS_PEG" id="FS_KD_STATUS_PEG" class="select2" style="width: 250px;">
+                <option value="">--Pilih Data--</option>
+                {foreach from=$rs_status item=data}
+                  <option value="{$data.fs_kd_status_peg}" {if $result.FS_KD_STATUS_PEG_RS eq $data.fs_kd_status_peg_rs}selected="selected"{/if} >{$data.fs_nm_status_peg_rs}</option>
+                {/foreach}
+            </select>
+        </td>
+        <td>No. SK</td>
+        <td><input name="FS_NO_SK" value="{$result.FS_NO_SK}" type="text"/></td>
+        
+    </tr> 
+    <tr>    
+        <td>SK TMT</td>
+        <td><input name="FD_TGL_SK" value="{$result.FD_TGL_SK}" type="text"/></td>
+        <td>Tgl Kontrak Mulai</td>
+        <td><input name="FD_TGL_KONTRAK" value="{$result.FD_TGL_KONTRAK}" type="text"/></td>
+    </tr> 
+    <tr>    
+        <td>Tgl Kontrak Akhir</td>
+        <td><input name="FD_TGL_KONTRAK_B" value="{$result.FD_TGL_KONTRAK_B}" type="text"/></td>
+        <td>Masa Kerja	</td>
+        <td><input name="FN_GAPOK" value="{$result.FS_MASA_KERJA}" type="text"/></td>
+     </tr> 
+     <tr>    
+        <td>Pejabat</td>
+            <td><input name="FS_NM_PEJABAT" value="{$result.FS_NM_PEJABAT}" type="text"/></td>
+        <td>Jenis</td>
+        <td>
+            <select name="FS_KD_JENIS_KENAIKAN_GAJI" id="FS_KD_STATUS_PEG" class="select2" style="width: 250px;">
+                <option value="">--Pilih Data--</option>
+                {foreach from=$rs_jenis item=data}
+                  <option value="{$data.fs_kd_jenis_kenaikan_gaji}" {if $result.FS_KD_JENIS_KENAIKAN_GAJI eq $data.fs_kd_jenis_kenaikan_gaji}selected="selected"{/if} >{$data.fs_nm_jenis_kenaikan_gaji}</option>
+                {/foreach}
+            </select>
+        </td>
+     </tr> 
+     <tr>    
+        <td>Gaji Pokok</td>
+        <td><input name="FN_GAJI_POKOK" value="{$result.FN_GAJI_POKOK}" type="text"/></td>
+        <td>Aktif</td>
+        <td>
+            <select name="FB_AKTIF" id="FB_AKTIF" class="select2" style="width: 250px;">
+                <option value="">--Pilih Data--</option>
+                {foreach from=$rs_aktif item=data}
+                  <option value="{$data.fb_aktif}" {if $result.FB_AKTIF eq $data.fb_aktif}selected="selected"{/if} >{$data.fb_aktif_name}</option>
+                {/foreach}
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Tj. Jabatan</td>
+        <td><input name="FN_TUNJANGAN1" value="{$result.FN_TUNJANGAN1}" type="text"/></td>
+        <td>Tj. Fungsional</td>
+        <td><input name="FN_TUNJANGAN2" value="{$result.FN_TUNJANGAN2}" type="text"/></td>
+    </tr>
+    <tr>
+        <td>Tj. Profesi</td>
+        <td><input name="FN_TUNJANGAN3" value="{$result.FN_TUNJANGAN3}" type="text"/></td>
+        <td>Tj. Makan</td>
+        <td><input name="FN_TUNJANGAN4" value="{$result.FN_TUNJANGAN4}" type="text"/></td>
+    </tr> 
+
+    <tr>
+        <td>Tj. Pendidikan</td>
+        <td><input name="FN_TUNJANGAN5" value="{$result.FN_TUNJANGAN5}" type="text"/></td>
+        <td>Tj. TKP</td>
+        <td><input name="FN_TUNJANGAN8" value="{$result.FN_TUNJANGAN8}" type="text"/></td>
+    </tr> 
+    <tr>
+        <td>Tj. PULSA</td>
+        <td><input name="FN_TJ_PULSA" value="{$result.FN_TJ_PULSA}" type="text"/></td>
+    </tr>
+    <tr class="submit-box">
+        <td colspan="4">
+            <input type="submit" name="save" value="Simpan" class="edit-button" /> 
+        </td>
+    </tr>
+  </table>
+ </form>

@@ -1,0 +1,58 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".select2").select2({
+            placeholder: "Pilih Induk Jabatan",
+            allowClear: true
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/jabatan')}">Jabatan</a><span></span>
+        <small>Add Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/jabatan')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />  Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/jabatan/add_process')}" method="post">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Add Data</th>
+        </tr>
+        <tr>
+            <td width="15%">Induk Jabatan</td>
+            <td width="85%">
+                <select name="jabatan_parent" class="select2" style="width: 400px">
+                    <option value=""></option>
+                    {foreach from=$arr_jabatan|default:'' item=jab}
+                    <option value="{$jab.jabatan_id|default:''}" {if $result.jabatan_parent|default:'' eq $jab.jabatan_id}selected="selected"{/if}>{$jab.indent|default:''} {$jab.jabatan_nama|default:''}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td>
+                <input name="jabatan_nama" type="text" value="{$result.jabatan_nama|default:''}" size="40" maxlength="50"/>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

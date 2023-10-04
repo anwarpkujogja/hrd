@@ -1,0 +1,131 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            yearRange: '-90:+0',
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+        $(".select2").select2({
+            placeholder: " ",
+            allowClear: true
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p><a href="#">Settings</a>
+        <a href="#"></a><span></span>
+        <a href="{$config->site_url('pengaturan/pegawai')}">Pegawai</a><span></span>
+        <small>{$result.nama_lengkap|default:''}</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="sub-nav-content">
+    <div class="clear"></div>
+    <div class="sub-content">
+        <form action="{$config->site_url('pengaturan/pegawai/edit_process')}" method="post" enctype="multipart/form-data">
+            <!-- notification template -->
+            {include file="base/templates/notification.html"}
+            <!-- end of notification template-->
+            <input type="hidden" name="user_id" value="{$result.user_id|default:''}" />
+            <table class="table-input" width="100%">
+                <tr class="headrow">
+                    <th colspan="4">Data Pribadi</th>
+                </tr>
+                <tr>
+                    <td width="15%">Nama Lengkap</td>
+                    <td width="85%">
+                        <input name="nama_lengkap" type="text" tabindex="1" value="{$result.nama_lengkap|default:''}" size="40" maxlength="50" />
+                        <em>* wajib diisi</em>
+                    </td>        
+                </tr>
+                <tr>
+                    <td>NIP</td>
+                    <td>
+                        <input name="nip" type="text" value="{$result.nip|default:''}" size="25" maxlength="20" />
+                        <em>* wajib diisi</em>
+                    </td>            
+                </tr>
+                <tr>
+                    <td>Jenis Kelamin</td>
+                    <td>
+                        <label><input type="radio" name="jenis_kelamin" value="L" {if {$result.jenis_kelamin|default:''} eq 'L'}checked="checked"{/if} />Laki-laki</label>
+                        <label><input type="radio" name="jenis_kelamin" value="P" {if {$result.jenis_kelamin|default:''} eq 'P'}checked="checked"{/if} />Perempuan</label>
+                        <em>* wajib diisi</em>
+                    </td>            
+                </tr>
+                <tr>
+                    <td>Tempat, Tanggal Lahir</td>
+                    <td>
+                        <input type="text" name="tmp_lahir" value="{$result.tmp_lahir|default:''}" size="35" maxlength="50" tabindex="3"/>
+                        , <input type="text" name="tgl_lahir" value="{$result.tgl_lahir|default:''}" size="10" maxlength="10" class="tanggal" tabindex="4"/>
+                        <em>* wajib diisi</em>
+                    </td>            
+                </tr>
+                <tr>
+                    <td>Nomor Telepon</td>
+                    <td>
+                        <input name="no_telp" type="text" value="{$result.no_telp|default:''}" size="25" maxlength="20" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <input name="user_mail" type="text" value="{$result.user_mail|default:''}" size="30" maxlength="50" tabindex="9"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td>
+                        <input type="text" name="alamat" value="{$result.alamat|default:''}" size="60" maxlength="255" tabindex="5"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Unit Kerja</td>
+                    <td>
+                        <select name="unit_id" class="select2" style="width: 250px;">
+                            <option value=""></option>
+                            {foreach from=$rs_unit|default:'' item=unit}
+                            <option value="{$unit.unit_id}" {if {$result.unit_id|default:''} == $unit.unit_id}selected="selected"{/if}>{$unit.unit_name}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pangkat/Gol</td>
+                    <td>
+                        <select name="golongan_id" class="select2" style="width: 250px;">
+                            <option value=""></option>
+                            {foreach from=$rs_gol|default:'' item=gol}
+                            <option value="{$gol.golongan_id}" {if {$result.golongan_id|default:''} == $gol.golongan_id}selected="selected"{/if}>{$gol.golongan_pangkat} ({$gol.golongan_name})</option>
+                            {/foreach}
+                        </select>
+                        <em>* wajib diisi</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Jabatan</td>
+                    <td>
+                        <select name="jabatan_id" class="select2" style="width: 250px;">
+                            <option value=""></option>
+                            {foreach from=$rs_jab|default:'' item=jab}
+                            <option value="{$jab.jabatan_id}" {if {$result.jabatan_id|default:''} == $jab.jabatan_id}selected="selected"{/if}>{$jab.jabatan_nama}</option>
+                            {/foreach}
+                        </select>
+                        <em>* wajib diisi</em>
+                    </td>
+                </tr>
+                <tr class="submit-box">
+                    <td colspan="4">
+                        <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                        <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

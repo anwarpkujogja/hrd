@@ -1,0 +1,31 @@
+<div class="breadcrum">
+    <p><a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/kat_dokumen')}">Kategori Dokumen</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/kat_dokumen/process_edit')}" method="post">
+    <input name="kategori_id" type="hidden" value="{$rs_kategori.kategori_id|default:''}">
+    <table class="table-input" width="100%">
+        <tr>
+            <th colspan="2">Edit Data</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama</td>
+            <td width="85%">
+                <input name="kategori_nm" type="text" value="{$rs_kategori.kategori_nm|default:''}" size="40" maxlength="30" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

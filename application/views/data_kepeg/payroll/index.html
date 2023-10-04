@@ -1,0 +1,102 @@
+{include file="data_kepeg/payroll/add_script_js.html"}
+<div class="breadcrum">
+    <p>
+        <a href="#">Kepegawaian</a><span></span>
+        <small>Payroll</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('data_kepeg/payroll/proses_cari')}" method="post">
+        <table class="table-search" width="100%">
+            <tr>
+                <th width="5%">Unit</th>
+                <th width="15%">
+                    <select name="FS_KD_BAGIAN" id="surat_dari" class="select2" style="width: 250px;">
+                        <option value="">--Pilih Data--</option>
+                        {foreach from=$rs_unit item=data}
+                        <option value="{$data.FS_KD_BAGIAN}" {if $search.FS_KD_BAGIAN eq $data.FS_KD_BAGIAN} selected=""{/if}>{$data.FS_NM_BAGIAN}</option>
+                        {/foreach}
+                    </select>
+
+                </th>
+                <th width="5%">Bulan</th>
+                <th width="8%">
+                    <select name="bulan">
+                        {foreach from=$rs_bulan key=i item=bulan}
+                        <option value="{$i}" {if $search.bulan|default:'' eq $i}selected="selected"{/if}>{$bulan}</option>
+                        {/foreach}
+                    </select>
+                </th>
+                <th width="5%">Tahun</th>
+                <th width="8%">
+                    <select name="tahun">
+                        {foreach from=$rs_tahun item=tahun}
+                        <option value="{$tahun}" {if $search.tahun|default:'' eq $tahun}selected="selected"{/if}>{$tahun}</option>
+                        {/foreach}
+                    </select>
+                </th>
+                <th style="text-align: left;">
+
+                    <input name="save" type="submit" value="Tampilkan" />
+                    <input name="save" type="submit" value="Reset" />
+                </th>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="navigation">
+        <div class="pageRow">
+            <div class="pageNav">
+                <ul>
+                    <li class="info"></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="navigation-button">
+            <ul>
+                <li><a href="{$config->site_url('data_kepeg/payroll/report_excel_unit')}"><img src="{$BASEURL}resource/doc/images/icon/icon.excel.png" alt="" /> Export Excel </a></li>
+                <li><a href="{$config->site_url('data_kepeg/payroll/add_payroll')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Payrol</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table width="100%" class="table-view">
+    <tr>
+        <th>No</th>
+        <th>NIK</th>
+        <th>Nama</th>
+        <th>Gaji</th>
+        <th width='17%'></th>
+    </tr>
+    {foreach from=$rs_peg item=result}
+    <tr>
+        <td>{$no++}</td>
+        <td>{$result.FS_KD_PEG}</td>
+        <td>{$result.FS_NM_PEG}</td>
+        {if $result.FN_TYPE == 0}
+        <td><center>{$result.TOTAL|number_format:0:",":"."}</center></td>
+        {else}
+        <td><center>{$result.FN_BONUS_TERIMA_BERSIH|number_format:0:",":"."}</center></td>
+        {/if}
+        
+        <td>
+            {if $result.FN_TYPE == 0}
+            <center>
+            <a href="{$config->site_url('data_kepeg/payroll/edit/'|cat:$result.FS_KD_PAYROLL|default:''|cat:'/'|cat:$result.FS_KD_PEG)}"  class="button-edit">Edit</a>
+            <a href="{$config->site_url('data_kepeg/payroll/delete_process/'|cat:$result.FS_KD_PAYROLL|default:'')}"  onclick="return confirm('Are you sure you want to delete this item?');" class="button-hapus">Delete</a>
+            <a href="{$config->site_url('data_kepeg/payroll/slip/'|cat:$result.FS_KD_PAYROLL|default:''|cat:'/'|cat:$result.FS_KD_PEG|cat:'/'|cat:$result.FN_PERIODE)}" target="_blank" class="button-download">Print Gaji</a>
+            {else}
+            <a href="{$config->site_url('data_kepeg/payroll/slip_bonus/'|cat:$result.FS_KD_PAYROLL|default:''|cat:'/'|cat:$result.FS_KD_PEG|cat:'/'|cat:$result.FN_PERIODE)}" target="_blank" class="button-download">Print Bonus</a>
+            {/if}
+
+            </center>
+        </td>
+</tr>
+{/foreach}
+</table>

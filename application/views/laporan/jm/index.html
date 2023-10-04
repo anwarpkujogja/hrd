@@ -1,0 +1,81 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Laporan</a><span></span>
+        <small>Jasa Medis</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="search-box">
+    <h3><a href="#">Search</a></h3>
+    <form action="{$config->site_url('laporan/jm/proses_cari')}" method="post">
+        <table class="table-search" width="100%">
+            <tr>
+                <th width="5%">Filter</th>
+                <td width="20%">
+                    <select name="FS_KD_PEG" class="select2" style="width: 250px;">
+                        <option value="">--All Data--</option>
+                        {foreach from=$rs_dokter item=data}
+                        <option value="{$data.fs_kd_peg}" {if $search.FS_KD_PEG|default:'' eq $data.fs_kd_peg}selected="selected"{/if}>{$data.fs_nm_peg}</option>
+                        {/foreach}
+                    </td>
+                    <td>
+                        <select name="tahun">
+                            {foreach from=$rs_tahun item=tahun}
+                            <option value="{$tahun}" {if $search.tahun|default:'' eq $tahun}selected="selected"{/if}>{$tahun}</option>
+                            {/foreach}
+                        </select>
+                        <input name="save" type="submit" value="Tampilkan" />
+                        <input name="save" type="submit" value="Reset" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <table class="table-view" width="100%">
+        <tr>
+            <th width="4%">No</th>
+            <th>Periode</th>
+            <th>Nama Pegawai</th>
+            <th>Jasa Medis</th>
+            <th>Jasa Medis Tambahan</th>
+            <th>Jasa Medis TL</th>
+            <th>Jasa Medis Tidak Kena Pajak</th>
+            <th>Jasa Medis Bruto</th>
+            <th>Dasar Potongan</th>
+            <th>Dasar Potongan Komulatif</th>
+            <th>Pajak</th>
+            <th>Bazais</th>
+            <th>Potongan</th>
+            <th>Jasa Medis Netto</th>
+            <th></th>
+        </tr>
+        {foreach from=$rs_result item=result}
+        <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+            <td align="center">{$no++}.</td>
+            <td>{$result.bulan|upper}</td>
+            <td>{$result.FS_NM_PEG|upper}</td>
+            <td align="right">{$result.FN_JM_ALL|number_format:2:".":","}</td>
+            <td align="right">{$result.FN_JM_TAMBAH|number_format:2:".":","}</td>
+            <td align="right">{$result.FN_JM_TL|number_format:2:".":","}</td>
+            <td align="right">{$result.FN_JM_NON_PAJAK|number_format:2:".":","}</td>
+            <td align="right">{$result.FN_JM_BRUTO|number_format:2:".":","}</td>
+            <td align="right">{$result.FN_DASAR_POT|number_format:2:".":","}</td>
+            <td align="right">{$result.FN_DASAR_POT_KOM|number_format:2:".":","}</td>
+            <td align="right">{$result.FN_PAJAK|number_format:2:".":","}</td>
+            <td align="right">{$result.FN_BAZAIS|number_format:2:".":","}</td>
+            <td align="right">{$result.FN_POTONGAN|number_format:2:".":","}</td>
+            <td align="right">{$result.FN_JM_NETTO|number_format:2:".":","}</td>
+            <td>
+                <a href="javascript:void(0);" onclick="window.open('{$config->site_url('laporan/jm/rekap/'|cat:$result.FS_KD_TRS)}', 'nama_window_pop_up', 'scrollbars=yes,resizeable=no')" class="button-edit">Rekap</a> 
+                <a href="javascript:void(0);" onclick="window.open('{$config->site_url('laporan/jm/detil/'|cat:$result.FD_PERIODE_AWAL|cat:'/'|cat:$result.FD_PERIODE_AKHIR|cat:'/'|cat:$result.FS_KD_PEG)}', 'nama_window_pop_up', 'scrollbars=yes,resizeable=no')" class="button-edit">Detil</a>
+            </td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="5">Data not found!</td>
+        </tr>
+        {/foreach}
+    </table>

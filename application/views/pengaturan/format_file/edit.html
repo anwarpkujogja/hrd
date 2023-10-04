@@ -1,0 +1,89 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/format_file')}">File Configuration</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/format_file/edit_process')}" method="post">
+    <input name='id' type='hidden' value="{$result.id|default:''}">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Edit Data</th>
+        </tr>
+        <tr>
+            <td>Kode</td>
+            <td>
+                <input name="kode_format" type="text" value="{$result.kode_format|default:''}" size="15" maxlength="25" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Jenis Format</td>
+            <td>
+                <input name="jenis" type="text" value="{$result.jenis|default:''}" size="25" maxlength="35" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td width="15%">Lokasi Folder</td>
+            <td width="85%">
+                <input name="dir_location" type="text" value="{$result.dir_location|default:''}" size="70" maxlength="80" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Header Text</td>
+            <td>
+                <input name="header" type="text" value="{$result.header|default:''}" size="70" maxlength="160" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Header Row Index</td>
+            <td>
+                <input name="header_row_index" type="text" value="{$result.header_row_index|default:''}" size="5" maxlength="10" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Header Column Index</td>
+            <td>
+                <input name="header_column_index" type="text" value="{$result.header_column_index|default:''}" size="5" maxlength="10" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>First Content Index</td>
+            <td>
+                <input name="first_content_row" type="text" value="{$result.first_content_row|default:''}" size="5" maxlength="10" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Selisih Footer</td>
+            <td>
+                <input name="selisih_count_footer" type="text" value="{$result.selisih_count_footer|default:''}" size="5" maxlength="10" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Keterangan</td>
+            <td>
+                <textarea name="ket" type="text" cols="50" rows="2" >{$result.ket|default:''}</textarea>
+                <em>* wajib diisi</em>
+            </td>  
+        </tr>
+
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

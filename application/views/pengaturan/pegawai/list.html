@@ -1,0 +1,57 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Pegawai</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="pageRow">
+        <div class="pageNav">
+            <ul>
+                <li class="info"><strong>{$pagination.total|default:0}</strong> Record&nbsp;</li>{$pagination.data|default:''}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/pegawai/add')}"><img src="{$BASEURL}resource/doc/images/icon/add-icon.png" alt="" /> Add Data</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<div class="content-scroll">
+    <table class="table-view" width="100%">
+        <tr>
+            <th width="4%">No</th>
+            <th width="13%">NIP</th>
+            <th width="27%">Nama Lengkap</th>
+            <th width="11%">No Telepon</th>
+            <th width="17%">Email</th>
+            <th width="17%">Jabatan</th>
+            <th width="11%"></th>
+        </tr>
+        {foreach from=$rs_id item=result}
+        <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+            <td align="center">{$no++}.</td>
+            <td align="center">{$result.nip|default:'-'}</td>
+            <td>{$result.nama_lengkap|upper|default:'-'}</td>
+            <td align="center">{$result.no_telp|default:'-'}</td>
+            <td align="center">{$result.user_mail|default:'-'}</td>
+            <td>{$result.jabatan_nama|upper|default:'-'}</td>
+            <td align="center">
+                <a href="{$config->site_url('pengaturan/pegawai/edit/'|cat:$result.user_id|default:'')}" class="button-edit">Edit</a>
+                <a href="{$config->site_url('pengaturan/pegawai/delete/'|cat:$result.user_id|default:'')}" class="button-hapus">Hapus</a>
+            </td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="7">Data not found!</td>
+        </tr>
+        {/foreach}
+    </table>
+</div>

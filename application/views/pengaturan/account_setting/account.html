@@ -1,0 +1,47 @@
+<div class="breadcrum">
+    <p><a href="#">Account Settings</a><span></span><small>Edit Account</small></p>
+    <div class="clear"></div>
+</div>
+<div class="sub-content">
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <form action="{$config->site_url('pengaturan/account_setting/edit_account_process')}" method="post" enctype="multipart/form-data">
+        <table class="table-input" width="100%">
+            <tr class="headrow">
+                <th colspan="2">Edit Account</th>
+            </tr>
+            <tr>
+                <td width="20%">Username</td>
+                <td width="80%">
+                    <input name="user_name_old" type="hidden" value="{$user_name|default:''}" />
+                    <input name="user_name" type="text" value="{$result.user_name|default:''}" size="20" maxlength="30" readonly=""/>
+                </td>
+            </tr>
+            <tr>
+                <td>Password Lama</td>
+                <td>
+                    <input name="user_pass_old" type="password" value="{$result.user_pass_old|default:''}" size="20" maxlength="30" />
+                </td>
+            </tr>
+            <tr>
+                <td>Password Baru</td>
+                <td>
+                    <input name="user_pass_new" type="password" value="{$result.user_pass_new|default:''}" size="20" maxlength="30" />
+                </td>
+            </tr>
+            <tr>
+                <td>Konfirm Password Baru</td>
+                <td>
+                    <input name="user_pass_confirm" type="password" value="{$result.user_pass_confirm|default:''}" size="20" maxlength="30" />
+                </td>                 
+            </tr>
+            <tr class="submit-box">
+                <td colspan="2">
+                    <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                    <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+                </td>
+            </tr>
+        </table>
+    </form>  
+</div>

@@ -1,0 +1,32 @@
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <small>Mapping Unit Akuntansi</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<table class="table-view" width="100%">
+    <tr>
+        <th width="4%">No</th>
+        <th>Nama Kepegawaian</th>
+        <th>Nama Akuntansi</th>
+        <th width="4%"></th>
+    </tr>
+    {foreach from=$rs_result item=result}
+    <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+        <td align="center">{$no++}.</td>
+        <td>{$result.FS_NM_BAGIAN|upper}</td>
+        <td>{$result.FS_NM_UNIT|upper}</td>
+        <td align="center">
+            <a href="{$config->site_url('pengaturan/acc/edit/'|cat:$result.FS_KD_BAGIAN|default:'')}" class="button-edit">Edit</a>
+        </td>
+    </tr>
+    {foreachelse}
+    <tr>
+        <td colspan="5">Data not found!</td>
+    </tr>
+    {/foreach}
+</table>

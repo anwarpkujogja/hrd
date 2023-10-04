@@ -1,0 +1,85 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // date picker
+        $(".tanggal").datepicker({
+            yearRange: '-90:+0',
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'both',
+            buttonImage: '{$BASEURL}/resource/doc/images/icon/calendar.gif',
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p><a href="#">Account Settings</a><span></span><small>Data Pribadi</small></p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('dashboard/account_setting/process_data_pribadi')}" method="post" enctype="multipart/form-data">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="5">Data Pribadi</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama Lengkap</td>
+            <td width="40%">
+                <input name="nama_lengkap" type="text" value="{$result.nama_lengkap|default:''}" size="35" maxlength="50" />
+                <em>* wajib diisi</em>
+            </td>
+            <td rowspan="4" width="45%">
+                <img src="{$image_path|default:'default.png'}" alt="" style="height: 76px; border: 1px solid #999; background-color: #fff; padding: 5px;" /></br>
+                <input type="file" name="user_img" /></br>
+                <em>Max size 1024 x 768 px</em>  
+            </td>
+        </tr>
+        <tr>
+            <td>Jenis Kelamin</td>
+            <td>
+                <select name="jenis_kelamin">
+                    <option></option>
+                    <option value="L" {if {$result.jenis_kelamin|default:''} eq "L"}selected="selected"{/if}>Laki - laki</option>
+                    <option value="P" {if {$result.jenis_kelamin|default:''} eq "P"}selected="selected"{/if}>Perempuan</option>
+                </select>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Tempat, Tanggal Lahir</td>
+            <td>
+                <input type="text" name="tmp_lahir" value="{$result.tmp_lahir|default:''}" size="40" maxlength="50" />
+                , <input type="text" name="tgl_lahir" value="{$result.tgl_lahir|default:''}" size="10" maxlength="10" class="tanggal" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Alamat</td>
+            <td><input type="text" name="alamat" value="{$result.alamat|default:''}" size="70" maxlength="100" /></td>
+        </tr>
+        <tr>
+            <td>Nomor Telepon</td>
+            <td>
+                <input name="no_telp" type="text" value="{$result.no_telp|default:''}" size="30" maxlength="50" />
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>
+                <input name="user_mail" type="text" value="{$result.user_mail|default:''}" size="30" maxlength="50" />
+                <em>* wajib diisi</em>
+            </td>
+            <td></td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="5">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>
+           

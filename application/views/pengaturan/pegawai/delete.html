@@ -1,0 +1,86 @@
+<div class="breadcrum">
+    <p><a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/pegawai')}">Pegawai</a><span></span>
+        <small>Delete Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/pegawai')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />  Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/pegawai/delete_process')}" method="post">
+    <input name="user_img" type="hidden" value="{$result.user_img|default:''}">
+    <input name="user_id" type="hidden" value="{$result.user_id|default:''}">
+    <table class="table-input" width="100%">
+        <tr>
+            <td colspan="3"><b>Apakah anda yakin akan menghapus data dibawah ini?</b></td>
+        </tr>
+        <tr class="headrow">
+            <th colspan="3">Data Pribadi</th>
+        </tr>
+        <tr>
+            <td width="15%">Nama Lengkap</td>
+            <td width="40%">{$result.nama_lengkap|default:''}</td>
+            <td rowspan="8" width="45%">
+                <img src="{$BASEURL}resource/doc/images/users/{$result.user_img|default:'default.png'}" alt="" width="200" />
+            </td>
+        </tr>
+        <tr>
+            <td>NIP</td>
+            <td>{$result.nip|default:'-'}</td>
+        </tr>
+        <tr>
+            <td>Tempat, Tanggal Lahir</td>
+            <td>{$result.tmp_lahir|default:'-'}, {$result.tgl_lahir|default:''}</td>
+        </tr>
+        <tr>
+            <td>No Telepon</td>
+            <td>{$result.no_telp|default:'-'}</td>
+        </tr>
+        <tr>
+            <td>Alamat</td>
+            <td>{$result.alamat|default:'='}</td>
+        </tr>
+        <tr>
+            <td>Unit Kerja</td>
+            <td>
+                {foreach from=$rs_unit|default:'' item=unit}
+                {if {$result.unit_id|default:''} == $unit.unit_id}
+                {$unit.unit_name|default:'-'}
+                {/if}
+                {/foreach}
+            </td>
+        </tr>
+        <tr>
+            <td>Pangkat/Gol</td>
+            <td>
+                {foreach from=$rs_gol|default:'' item=gol}
+                {if {$result.golongan_id|default:''} == $gol.golongan_id}
+                {$gol.golongan_pangkat} ({$gol.golongan_name})
+                {/if}
+                {/foreach}
+            </td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td>
+                {foreach from=$rs_jab|default:'' item=jab}
+                {if {$result.jabatan_id|default:''} == $jab.jabatan_id}
+                {$jab.jabatan_nama}
+                {/if}
+                {/foreach}
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="3"><input type="submit" name="save[insert]" value="Hapus" class="edit-button" /></td>
+        </tr>
+    </table>
+</form>

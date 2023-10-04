@@ -1,0 +1,74 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".select2").select2({
+            placeholder: "Pilih Induk Unit",
+            allowClear: true
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Settings</a><span></span>
+        <a href="{$config->site_url('pengaturan/unitkerja')}">Unit Kerja</a><span></span>
+        <small>Edit Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('pengaturan/unitkerja')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />  Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('pengaturan/unitkerja/edit_process')}" method="post">
+    <input name="unit_id" type="hidden" value="{$result.unit_id|default:''}">
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="2">Edit Data</th>
+        </tr>
+        <tr>
+            <td width="15%">Kode Unit</td>
+            <td width="85%">
+                <input name="unit_cd" type="text" value="{$result.unit_cd|default:''}" size="10" maxlength="30"/>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Unit Kerja Induk</td>
+            <td>
+                <select name="unit_parent" class="select2" style="width: 300px">
+                    <option value=""></option>
+                    {foreach from=$rs_unit|default:'' item=dept}
+                    <option value="{$dept.unit_id|default:''}" 
+                            {if $result.unit_parent|default:'' eq $dept.unit_id}selected="selected"{/if}>{$rs_unit.indent|default:''} {$dept.unit_name|default:''}</option>
+                    {/foreach}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Unit Kerja</td>
+            <td>
+                <input name="unit_name" type="text" value="{$result.unit_name|default:''}" size="50" maxlength="150"/>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Kepala Unit Kerja</td>
+            <td>
+                <input name="unit_lead" type="text" value="{$result.unit_lead|default:''}" size="35" maxlength="150"/>
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save[insert]" value="Simpan" class="edit-button" />
+                <input type="reset" name="save[reset]" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+    </table>
+</form>

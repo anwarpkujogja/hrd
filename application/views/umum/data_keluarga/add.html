@@ -1,0 +1,111 @@
+<!--<script type="text/javascript">
+    $(document).ready(function() {
+        // multiple upload file
+        var upload_number = 2;
+        function addFileInput() {
+            var d = document.createElement("div");
+            var file = document.createElement("input");
+            file.setAttribute("type", "file");
+            file.setAttribute("name", "file_name" + upload_number);
+            d.appendChild(file);
+            document.getElementById("moreUploads").appendChild(d);
+            upload_number++;
+        }
+//            alert(addFileInput());
+    });
+</script>-->
+<!-- include javascript -->
+{include file="umum/data_keluarga/add_script_js.html"}
+<!-- end of include javascript-->
+<div class="breadcrum">
+    <p>
+        <a href="#">Data Umum</a><span></span>
+        <a href="{$config->site_url('umum/data_keluarga')}">Data Keluarga</a><span></span>
+        <small>Tambah Data</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<div class="navigation">
+    <div class="navigation-button">
+        <ul>
+            <li><a href="{$config->site_url('umum/data_keluarga')}"><img src="{$BASEURL}resource/doc/images/icon/back-icon.png" alt="" />  Back</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!--notification template-->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('umum/data_keluarga/add_process')}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="FS_KD_PEG" value="{$result.FS_KD_PEG}" />
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">DATA DETAIL</th>
+        </tr>
+        <tr>
+            <td width='15%'>Nama</td>
+            <td width='85%'>{$result.FS_NM_PEG}</td>
+        </tr>
+        <tr>
+            <td>Hub Keluarga</td>
+            <td>
+                {if $result.FS_KD_HUB_KEL eq '003'}
+                Anak
+                {elseif $result.FS_KD_HUB_KEL eq '001'}
+                Suami
+                {elseif $result.FS_KD_HUB_KEL eq '002'}
+                Istri
+                {/if}
+            </td>
+        </tr>
+        <tr>
+            <td>Keterangan</td>
+            <td>
+                <input type="text" name="FS_NM_FILE_PEG_KET" size="20" /> 
+            </td>
+        </tr>
+        <tr>
+            <td>File</td>
+            <td colspan="2">
+                <input type="file" name="att_name" />
+                <em>* pdf only</em>
+            </td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="2">
+                <input type="submit" name="save" value="Simpan" class="edit-button" /> 
+                <input type="reset" name="save" value="Reset" class="edit-button" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div id="result"></div>
+            </td>
+        </tr>
+    </table>
+</form>
+<div class="scroll">
+    <table class="table-view" width="100%">
+        <tr>
+            <th width="3%">No</th>
+            <th>Nama</th>
+            <th width="15%"></th>
+        </tr>
+        {foreach from=$rs_att item=result}
+        <tr {if ($no % 2) <> 1}class="blink-row"{/if}>
+            <td align="center">{$no++}.</td>
+            <td>
+                {$result.FS_NM_FILE_PEG_KET}
+            </td>
+            <td align="center">
+                <a href="{$BASEURL}resource/doc/arsip/{$result.FS_NM_FILE_PEG}" target="_blank" class="button-download">Download</a>
+                <a href="{$config->site_url('umum/data_keluarga/delete_process/'|cat:$result.FS_KD_FILE_PEG|cat:'/'|cat:$result.FS_KD_PEG|cat:'/'|cat:$result.FS_NM_FILE_PEG)}" onclick="return confirm('Are you sure you want to delete this item?');" class="button-hapus">Hapus</a>
+            </td>
+        </tr>
+        {foreachelse}
+        <tr>
+            <td colspan="6">Data not found!</td>
+        </tr>
+        {/foreach}
+    </table>
+</div>

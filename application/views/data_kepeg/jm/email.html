@@ -1,0 +1,97 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        // date picker
+        $(".tanggal").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showOn: "both",
+            buttonImage: "{$BASEURL}/resource/doc/images/icon/calendar.gif",
+            buttonImageOnly: true,
+            dateFormat: 'yy-mm-dd'
+        });
+
+        $(".select2").select2({
+            placeholder: "Pilih",
+            allowClear: true
+        });
+    });
+</script>
+<div class="breadcrum">
+    <p>
+        <a href="#">Kepegawaian</a><span></span>
+        <small>Jasa Medis</small>
+    </p>
+    <div class="clear"></div>
+</div>
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+<form action="{$config->site_url('data_kepeg/jm/email_process')}" method="post" enctype="multipart/form-data">
+<input type="hidden" name="FS_KD_TRS" value="{$result.FS_KD_TRS}"/>
+    <table class="table-info" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Jasa Medis</th>
+        </tr>
+        <tr>
+            <td width='15%'>Nama</td>
+            <td width='35%'>{$result.FS_NM_PEG}</td>
+            <td width='15%'>NIP</td>
+            <td width='35%'>{$result.FS_KD_PEG|default:''}</td>
+        </tr>
+        <tr>
+            <td>No Bank</td>
+            <td>{$result.FS_REK_BANK}</td>
+            <td>Email</td>
+            <td>{$result.FS_EMAIL}</td>
+        </tr>
+    </table>
+    <div class="navigation">
+        <div class="pageRow">
+            <div class="pageNav">
+                <ul>
+                    <li>
+                        <a href="javascript:void(0);" onclick="window.open('{$config->site_url('laporan/jm/rekap/'|cat:$result.FS_KD_TRS)}', 'nama_window_pop_up', 'scrollbars=yes,resizeable=no')"/><img
+                            src="{$BASEURL}resource/doc/images/icon/printer-icon.png" alt="" /> Slip Detil</a>
+                    </li>
+                    <li>
+                        <a  href="javascript:void(0);" onclick="window.open('{$config->site_url('laporan/jm/detil/'|cat:$result.FD_PERIODE_AWAL|cat:'/'|cat:$result.FD_PERIODE_AKHIR|cat:'/'|cat:$result.FS_KD_PEG)}', 'nama_window_pop_up', 'scrollbars=yes,resizeable=no')"><img
+                                src="{$BASEURL}resource/doc/images/icon/printer-icon.png" alt="" /> Slip Rekap</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="navigation-button">
+            <ul>
+                
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <table class="table-input" width="100%">
+        <tr class="headrow">
+            <th colspan="4">Add Data</th>
+        </tr>
+        <tr>
+            <td width="20%">Slip Rekap</td>
+            <td width="80%">
+                <input type="file" name="att_name1" />
+                <em>* wajib diisi</em>
+            </td>
+        </tr>
+        <tr>
+            <td>Slip Detil</td>
+            <td>
+                <input type="file" name="att_name2" />
+                <em>* wajib diisi</em>
+            </td>
+            <td></td>
+        </tr>
+        <tr class="submit-box">
+            <td colspan="4">
+                <input type="submit" name="save" value="Simpan" class="edit-button" tabindex="10" />
+                <input type="reset" name="save" value="Reset" class="edit-button" tabindex="11" />
+            </td>
+        </tr>
+    </table>
+</form>
