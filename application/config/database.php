@@ -41,44 +41,5 @@ if (!defined('BASEPATH'))
   | the active record class
  */
 
-$active_group = 'default';
-$active_record = TRUE;
-
-//$db['default']['hostname'] = '202.91.14.3';
-//$db['default']['username'] = 'earsipmanado';
-//$db['default']['password'] = '34rs1pm4n4d0';
-$db['default']['hostname'] = '192.168.10.1';
-$db['default']['username'] = 'sa';
-$db['default']['password'] = 'b35mart1c5';
-$db['default']['database'] = 'PKU';
-$db['default']['dbdriver'] = 'sqlsrv';
-$db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = FALSE;
-$db['default']['db_debug'] = TRUE;
-$db['default']['cache_on'] = FALSE;
-$db['default']['cachedir'] = '';
-$db['default']['char_set'] = 'utf8';
-$db['default']['dbcollat'] = 'utf8_general_ci';
-$db['default']['swap_pre'] = '';
-$db['default']['autoinit'] = TRUE;
-$db['default']['stricton'] = FALSE;
-
-$db['hospital']['hostname'] = '192.168.10.1';
-//$db['hospital']['username'] = 'admin';
-//$db['hospital']['password'] = '123';
-$db['hospital']['username'] = 'sa';
-$db['hospital']['password'] = 'b35mart1c5';
-$db['hospital']['database'] = 'HOSPITAL';
-$db['hospital']['dbdriver'] = 'sqlsrv';
-$db['hospital']['dbprefix'] = '';
-$db['hospital']['pconnect'] = FALSE;
-$db['hospital']['db_debug'] = TRUE;
-$db['hospital']['cache_on'] = FALSE;
-$db['hospital']['cachedir'] = '';
-$db['hospital']['char_set'] = 'utf8';
-$db['hospital']['dbcollat'] = 'utf8_general_ci';
-$db['hospital']['swap_pre'] = '';
-$db['hospital']['autoinit'] = TRUE;
-$db['hospital']['stricton'] = FALSE;
 /* End of file database.php */
 /* Location: ./application/config/database.php */
