@@ -1,0 +1,2 @@
+# hrd
+management hrd
