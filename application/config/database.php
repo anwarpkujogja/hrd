@@ -47,7 +47,7 @@ $active_record = TRUE;
 //$db['default']['hostname'] = '202.91.14.3';
 //$db['default']['username'] = 'earsipmanado';
 //$db['default']['password'] = '34rs1pm4n4d0';
-$db['default']['hostname'] = '192.168.10.20';
+$db['default']['hostname'] = '192.168.10.1';
 $db['default']['username'] = 'sa';
 $db['default']['password'] = 'b35mart1c5';
 $db['default']['database'] = 'PKU';
@@ -63,7 +63,7 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
-$db['hospital']['hostname'] = '192.168.10.20';
+$db['hospital']['hostname'] = '192.168.10.1';
 //$db['hospital']['username'] = 'admin';
 //$db['hospital']['password'] = '123';
 $db['hospital']['username'] = 'sa';
